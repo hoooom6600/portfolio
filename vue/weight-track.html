@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 系列八：第5課 ── 體重追蹤應用程式(彈跳面板)</title>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/jquery-datetime-picker@2.5.11/jquery.datetimepicker.min.css">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        }
+
+        #wrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            max-width: 800px;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #0d3b66;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h2 {
+            color: #f4d35e;
+        }
+
+        .header .new-record-btn {
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 5px 0;
+            color: #98c1d9;
+            font-size: 16px;
+            font-weight: 900;
+            background-color: transparent;
+            border: 2px solid #98c1d9;
+            border-radius: 5px;
+            transition: .3s;
+        }
+
+        .header .new-record-btn:hover {
+            color: #555b6e;
+            background-color: #98c1d9;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main .records {
+            order: 1;
+            height: 300px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            min-width: 250px;
+        }
+
+        .main .records::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .main .records::-webkit-scrollbar-thumb {
+            background-color: rgba(200, 200, 200, .7);
+            border-radius: 3px;
+
+        }
+
+        .main .records::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(200, 200, 200, 1);
+        }
+
+        .main .records::-webkit-scrollbar-track {
+            background-color: rgba(200, 200, 200, .3);
+            border-radius: 3px;
+
+        }
+
+        .main .records li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            line-height: 20px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 40px;
+            background-color: #f4d35e;
+        }
+
+        .main .records li .data {
+            display: flex;
+            justify-content: space-between;
+            flex-grow: 1;
+            color: #293241;
+        }
+
+        .main .records li .data span {
+            margin: 0 50px;
+        }
+
+        .main .delete-btn {
+            margin-left: 10px;
+            font-size: 16px;
+            line-height: 30px;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            background-color: #ee964b;
+            border-radius: 50%;
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .main .chart-box {
+            position: relative;
+            /* 寬度一定要精準，因為手動縮小再放大，chart.js尺寸會跑掉 */
+            width: 100%;
+            max-width: 768px;
+            height: 300px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(120, 120, 120, .7);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .new-record-modal {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #0d3b66;
+        }
+
+        .new-record-modal.active {
+            display: flex;
+        }
+
+        .new-record-modal label {
+            font-size: 16px;
+            color: #f4d35e;
+        }
+
+        .new-record-modal input {
+            font-size: 16px;
+            padding: 5px;
+        }
+
+        .new-record-modal .warn {
+            color: #f00;
+            display: none;
+        }
+
+        .new-record-modal .warn.active {
+            display: block;
+        }
+
+        .new-record-modal>* {
+            margin: 5px 0;
+        }
+
+        .submit-btn {
+            padding: 5px 10px;
+            align-self: center;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            font-weight: 900;
+            background-color: #f4d35e;
+            color: #000;
+            border-radius: 5px;
+            margin: 0;
+        }
+
+        .close-X-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            border-radius: 50%;
+            border: none;
+            font-weight: 900;
+            font-size: 16px;
+            background-color: #f4d35e;
+            color: #000;
+            cursor: pointer;
+        }
+
+        h1 {
+            line-height: 70px;
+        }
+
+        @media screen and (min-width: 768px) {
+            body {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            h1 {
+                line-height: 70px;
+                height: 0;
+            }
+
+            #wrap {
+                /* 如果父元素有transform，則子物件的fixed將會以父層為基準，不再以視窗為準 */
+                /* position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-50%); */
+
+                /* 所以改用body flex + #wrap margin: auto + h1 height: 0 來水平垂直置中於視窗，取代絕對定位的水平垂直置中方法 */
+                margin: auto;
+                height: auto;
+                border-radius: 10px;
+            }
+
+            .main {
+                flex-direction: row;
+            }
+
+            .main .records {
+                order: 0;
+            }
+
+            .main .chart-box {
+                /* 寬度一定要精準，因為手動縮小再放大，chart.js尺寸會跑掉 */
+                /* #wrap width: 800px, padding: 10px ； .records width: 250px*/
+                width: 530px;
+            }
+
+            .main .records li .data {
+                justify-content: space-between;
+            }
+
+            .main .records li .data span {
+                margin: 0;
+            }
+
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <h1 style="text-align: center;">JavaScript 系列八：第5課 ── 體重追蹤應用程式(彈跳面板)</h1>
+
+    <div id="wrap">
+        <div class="header">
+            <h2>體重紀錄</h2>
+            <button class="new-record-btn" @click="openRecordModal">新增體重</button>
+        </div>
+
+        <div class="main">
+            <ul class="records">
+                <li v-for="(record, index) of records">
+                    <p class="data">
+                        <span class="date">{{ record.date }}</span>
+                        <span class="weight">{{ record.weight + 'kg' }}</span>
+                    </p>
+                    <button class="delete-btn" @click="deleteRecord(index)">X</button>
+                </li>
+            </ul>
+            <div class="chart-box">
+                <canvas id="Chart" ref="chart"></canvas>
+            </div>
+        </div>
+
+
+        <!-- modal -->
+        <div class="modal" :class="{active: modalActive}">
+            <div class="new-record-modal" :class="{active: modalActive}">
+
+                <label for="date">日期</label>
+                <input type="text" name="" id="date" ref="date" placeholder="請選擇日期" required>
+                <p class="warn">請選擇日期</p>
+
+                <label for="weight">體重</label>
+                <input type="number" name="" id="weight" ref="weight" step="0.01" v-model="weight" placeholder="請輸入體重"
+                    required>
+                <p class="warn">請輸入體重，不可為負數</p>
+
+
+                <button class="submit-btn" @click="submit">確認</button>
+                <button class="close-X-btn" @click="closeModal">X</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script> -->
+
+    <!-- JQ，為了datetimepicker必須搭配使用 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- 時間選取(時&分)以整點為預設+-step的datetimepicker版本 -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+        integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            chart: null,
+            data() {
+                return {
+                    records: [],
+                    modalActive: false,
+                    weight: null,
+                    createdCount: 0,
+                    weights: [],
+                    dates: []
+                }
+            },
+            watch: {
+                records: {
+                    handler(newValue, oldValue) {
+                        localStorage.setItem('records', JSON.stringify(this.records));
+                    },
+                    deep: true
+                },
+                createdCount(newValue, oldValue) {
+                    localStorage.setItem('createdCount', JSON.stringify(this.createdCount));
+                },
+                weights: {
+                    handler(newValue, oldValue) {
+                        localStorage.setItem('weights', JSON.stringify(this.weights));
+                    },
+                    deep: true
+                },
+                dates: {
+                    handler(newValue, oldValue) {
+                        localStorage.setItem('dates', JSON.stringify(this.dates));
+                    },
+                    deep: true
+                },
+            },
+            methods: {
+                openRecordModal() {
+                    this.modalActive = true;
+                },
+                submit() {
+                    let isValid = true;
+                    this.$refs.date.nextSibling.classList.remove('active');
+                    this.$refs.weight.nextSibling.classList.remove('active');
+
+
+                    if (this.$refs.date.value === null || this.$refs.date.value === '') {
+                        alert('請選擇日期');
+                        isValid = false;
+                        this.$refs.date.nextSibling.classList.add('active');
+                    }
+                    if (parseFloat(this.weight) === null || isNaN(parseFloat(this.weight)) || parseFloat(this.weight) < 0) {
+                        alert('請輸入體重，且不可為負數');
+                        isValid = false;
+                        this.$refs.weight.nextSibling.classList.add('active');
+                    }
+                    if (isValid) {
+                        let newRecord = {
+                            id: ++this.createdCount,
+                            date: this.$refs.date.value,
+                            weight: this.weight
+                        };
+
+                        this.records.push(newRecord);
+
+                        this.shuffle();
+                        this.closeModal();
+                    }
+                },
+                shuffle() {
+                    let shuffle = this.records;
+                    shuffle.sort(function (a, b) {
+                        return new Date(a.date) - new Date(b.date);
+                    });
+
+                    this.records = shuffle;
+                    // 每次新增就要重新確認排列，因為確認排列會之後才能確定圖表的array元素排序(藉由push完成)，因此需要每次有新增資料，就要先淨空 this.weights 和 this.dates
+                    this.weights = [];
+                    this.dates = [];
+
+                    // 確認排列會之後才能確定圖表的array元素排序
+                    for (let record of this.records) {
+                        this.weights.push(record.weight);
+                        this.dates.push(record.date);
+                    }
+
+                    this.chart.data.labels = JSON.parse(JSON.stringify(this.dates));
+                    this.chart.data.datasets[0].data = JSON.parse(JSON.stringify(this.weights));
+                    this.chart.update();
+                },
+                closeModal() {
+                    this.$refs.date.nextSibling.classList.remove('active');
+                    this.$refs.weight.nextSibling.classList.remove('active');
+
+                    this.modalActive = false;
+                    this.weight = null;
+                    this.$refs.date.value = null;
+                },
+                deleteRecord(index) {
+                    this.records.splice(index, 1);
+                    this.weights.splice(index, 1);
+                    this.dates.splice(index, 1);
+
+                    this.chart.data.labels = JSON.parse(JSON.stringify(this.dates));
+                    this.chart.data.datasets[0].data = JSON.parse(JSON.stringify(this.weights));
+                    this.chart.update();
+                }
+            },
+            mounted() {
+                if (localStorage.getItem('records') && localStorage.getItem('createdCount') && localStorage.getItem('weights') && localStorage.getItem('dates')) {
+                    this.records = JSON.parse(localStorage.getItem('records'));
+                    this.createdCount = JSON.parse(localStorage.getItem('createdCount'));
+                    this.weights = JSON.parse(localStorage.getItem('weights'));
+                    this.dates = JSON.parse(localStorage.getItem('dates'));
+                }
+
+                const chartAreaBorder = {
+                    id: 'chartAreaBorder',
+                    afterDraw(chart, args, options) {
+                        const { ctx, chartArea: { left, top, width, height } } = chart;
+                        ctx.save();
+                        ctx.strokeStyle = options.borderColor;
+                        ctx.lineWidth = options.borderWidth;
+                        ctx.strokeRect(left, top, width, height);
+                        ctx.restore();
+                    }
+                };
+
+                this.chart = new Chart(this.$refs.chart, {
+                    type: 'line',
+                    data: {
+                        labels: JSON.parse(JSON.stringify(this.dates)),
+                        datasets: [{
+                            label: '體重',
+                            data: JSON.parse(JSON.stringify(this.weights)),
+                            borderWidth: 1,
+                            backgroundColor: '#f4d35e',
+                            borderColor: '#f4d35e',
+                            pointBackgroundColor: '#ee964b',
+                            pointBorderColor: '#ee964b',
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(200, 200, 200, .5)',
+                                    // drawTicks 為x,y軸凸出去的資料對應線條
+                                    drawTicks: false
+                                },
+                                ticks: {
+                                    color: 'rgba(200, 200, 200, 1)',
+                                    padding: 15,
+                                    autoSkip: false,
+                                    maxRotation: 35,
+                                    minRotation: 0
+                                },
+                                // border: {
+                                //     color: 'rgba(200, 200, 200, 1)',
+                                //     width: 1.5
+                                // }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(200, 200, 200, .5)',
+                                    // drawTicks 為x,y軸凸出去的資料對應線條
+                                    drawTicks: false
+                                },
+                                ticks: {
+                                    color: 'rgba(200, 200, 200, 1)',
+                                    padding: 15,
+                                    autoSkip: false,
+                                    maxRotation: 35,
+                                    minRotation: 0
+                                },
+                                // border: {
+                                //     color: 'rgba(200, 200, 200, 1)',
+                                //     width: 1.5
+                                // }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    font: {
+                                        size: 20,
+                                    },
+                                    color: '#fff'
+
+                                },
+                            },
+                            // 
+                            chartAreaBorder: {
+                                borderColor: 'rgba(200, 200, 200, 1)',
+                                borderWidth: 1.25,
+                            }
+                            // 
+                        },
+                        interaction: {
+                            mode: "nearest",
+                            intersect: false
+                        },
+
+                    },
+                    plugins: [chartAreaBorder]
+                });
+
+                // datetimepicker
+                $('#date').datetimepicker({
+                    format: 'Y-m-d',
+                    timepicker: false
+                });
+            }
+        }).mount('#wrap');
+
+    </script>
+</body>
+
+</html>

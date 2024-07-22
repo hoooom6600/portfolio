@@ -1,0 +1,110 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+{% if article %}
+Staff System: Event: {{ article.title }}
+{% else %}
+Staff System: Event: {{ request.form.title }}
+{% endif %}
+{% endblock %}
+
+{% block main %}
+<div class="container my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Edit Events</h2>
+    {% if not article %}
+    <p class="text-danger text-center">Please check if every information is filled.</p>
+    {% endif %}
+    <form action="/events_update" method="post">
+        {% if article %}
+        <div class="mb-3">
+            <label for="id" class="form-label"><span class="text-danger me-1">*</span>ID</label>
+            <input type="text" class="form-control" id="id" name="id" placeholder="ID" value="{{ article.id }}" required
+                readonly>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label"><span class="text-danger me-1">*</span>Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title"
+                value="{{ article.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label"><span class="text-danger me-1">*</span>Date</label>
+            <input type="date" class="form-control" id="date" name="date" placeholder="Date" value="{{ article.date }}"
+                required>
+        </div>
+        <div class="mb-3">
+            <label for="cover" class="form-label"><span class="text-danger me-1">*</span>Cover Image</label>
+            <input type="file" class="form-control" id="cover" name="cover" placeholder="Cover Image"
+                value="{{ article.cover }}" required>
+            <p class="form-text text-danger">
+                Please upload the same image to the file named "static" before you submit the form.
+                <br>
+                If not doing so, the cover image won't show correctly.
+            </p>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label"><span class="text-danger me-1">*</span>Content</label>
+            <textarea class="form-control" id="content" name="content" placeholder="Content"
+                required>{{ article.content }}</textarea>
+        </div>
+        <div class="mb-3 text-end">
+            <a href="/server_events" class="btn btn-secondary">Cancel</a>
+            <a href="{{ url_for('delete_events', id=article.id) }}" class="btn btn-danger">Delete</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        {% else %}
+        <div class="mb-3">
+            <label for="title" class="form-label"><span class="text-danger me-1">*</span>ID</label>
+            <input type="text" class="form-control" id="id" name="id" placeholder="ID" value="{{ request.form.id }}"
+                required readonly>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label"><span class="text-danger me-1">*</span>Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title"
+                value="{{ request.form.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label"><span class="text-danger me-1">*</span>Date</label>
+            <input type="date" class="form-control" id="date" name="date" placeholder="Date"
+                value="{{ request.form.date }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="cover" class="form-label"><span class="text-danger me-1">*</span>Cover Image</label>
+            <input type="file" class="form-control" id="cover" name="cover" placeholder="Cover Image"
+                value="{{ request.form.date }}" required>
+            <p class="form-text text-danger">
+                Please upload the same image to the file named "static" before you submit the form.
+                <br>
+                If not doing so, the cover image won't show correctly.
+            </p>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label"><span class="text-danger me-1">*</span>Content</label>
+            <textarea class="form-control" id="content" name="content" placeholder="Content"
+                required>{{ request.form.content }}</textarea>
+        </div>
+        <div class="mb-3 text-end">
+            <a href="/server_events" class="btn btn-secondary">Cancel</a>
+            <a href="{{ url_for('delete_events', id=request.form.id) }}" class="btn btn-danger">Delete</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.1.2/tinymce.min.js"
+    integrity="sha512-2T0G/zn88pKqnmUStXKW0BSPIW3Y2sky5Bl6HER5TwPGqCsLTVzAQRZMum/ptf5mRwYylP1lcvnLkgn6chASuA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tinymce.init({
+        selector: "#content",
+        // native HTML required attribute would made tinyMCE cannot be submitted even though textarea is not empty
+        // https://stackoverflow.com/questions/45054421/tinymce-required-prevent-from-sending-form
+        setup: function (editor) {
+            editor.on('change', function (e) {
+                editor.save();
+            });
+        }
+    });
+</script>
+{% endblock %}

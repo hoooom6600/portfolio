@@ -1,0 +1,43 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+Staff System: Events List
+{% endblock %}
+
+{% block main %}
+<div class="container-md my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Events List</h2>
+    <div class="mb-2">
+        <a href="/server_news" class="btn btn-outline-primary">News</a>
+        <a href="#" class="btn btn-primary disabled">Events</a>
+        <a href="/post" class="btn btn-warning float-end">New Post</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-1 text-center align-middle">ID</th>
+                    <th class="col-2 text-center align-middle">Date</th>
+                    <th class="text-center align-middle">Title</th>
+                    <th class="col-2 text-center align-middle">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td class="text-center align-middle">{{ event.id }}</td>
+                    <td class="text-center align-middle">{{ event.date }}</td>
+                    <td class="text-center align-middle">{{ event.title }}</td>
+                    <td class="text-center align-middle">
+                        <a href="{{ url_for('delete_events', id=event.id) }}" class="btn btn-outline-secondary my-1"><i
+                                class="fa-solid fa-trash-can"></i></a>
+                        <a href="{{ url_for('server_events', id=event.id) }}" class="btn btn-outline-secondary my-1"><i
+                                class="fa-solid fa-pen-to-square"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

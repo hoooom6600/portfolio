@@ -1,0 +1,73 @@
+----- articles.db -----
+CREATE TABLE news (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    date TEXT NOT NULL,
+    content TEXT NOT NULL,
+    cover TEXT NOT NULL,
+    attachment TEXT NOT NULL
+);
+
+CREATE TABLE events (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    date TEXT NOT NULL,
+    month TEXT NOT NULL,
+    day TEXT NOT NULL,
+    content TEXT NOT NULL,
+    cover TEXT NOT NULL,
+    attachment TEXT NOT NULL
+);
+
+----- spaces.db -----
+CREATE TABLE spaces (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    location TEXT NOT NULL,
+    address TEXT NOT NULL,
+    capacity INTEGER NOT NULL,
+    price INTEGER NOT NULL,
+    equipments TEXT NOT NULL,
+    img TEXT NOT NULL
+);
+
+----- users.db -----
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    birthday TEXT NOT NULL
+);
+
+----- orders.db -----
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    name TEXT NOT NULL,
+    start TEXT NOT NULL,
+    end TEXT NOT NULL,
+    duration TEXT NOT NULL,
+    application_date TEXT NOT NULL,
+    space TEXT NOT NULL,
+    location TEXT NOT NULL,
+    total INTEGER NOT NULL,
+    note TEXT,
+    comment TEXT,
+    status TEXT NOT NULL
+);
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    username TEXT NOT NULL,
+    space TEXT NOT NULL,
+    comment TEXT,
+    status TEXT NOT NULL DEFAULT 'hide'
+);
+
+

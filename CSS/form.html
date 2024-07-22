@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表單input CSS樣式手切</title>
+
+    <style>
+        body {
+            text-align: center;
+            background-color: #eee;
+        }
+
+        form {
+            background-color: #fff;
+            width: 600px;
+            margin: auto;
+            padding: 50px;
+            box-sizing: border-box;
+            border-radius: 20px;
+        }
+
+        form div {
+            margin: 20px 0;
+            padding: 0 100px;
+            text-align: left;
+            font-size: 0;
+        }
+
+        form div * {
+            vertical-align: middle;
+        }
+
+        form div label {
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        form .product input,
+        form .price input,
+        form .outfit select {
+            width: calc(100% - 100px);
+            box-sizing: border-box;
+        }
+
+        form .gender {
+            font-size: 0;
+        }
+
+        form .gender .gender-radio {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            width: calc(100% - 100px);
+            text-align: center;
+        }
+
+        /* option radio樣式及動畫 */
+        form .gender .gender-radio label {
+            display: inline-block;
+            width: 60px;
+            cursor: pointer;
+        }
+
+        form .gender .gender-radio input {
+            display: inline-block;
+            margin: 0;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            /* 不使用瀏覽器預設radio樣式 */
+            appearance: none;
+            border: 2px solid #aaa;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        form .gender .gender-radio input[type="radio"]:hover {
+            background-color: #ccc;
+            transition: 0.3s;
+        }
+
+        form .gender .gender-radio input[type="radio"]:checked {
+            background-color: #fff;
+            border-radius: 50%;
+            border: 5px solid #432b9b;
+            transition: border-color 0.3s;
+        }
+
+        form .delivery {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* option checkbox樣式及動畫 */
+        form .delivery input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            /* 不使用瀏覽器預設checkbox樣式 */
+            appearance: none;
+            border: 2px solid #aaa;
+            border-radius: 2px;
+            background-color: #fff;
+            transition: 0.5s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        form .delivery input[type="checkbox"]:hover {
+            background-color: #ccc;
+            transition: 0.3s;
+        }
+
+        form .delivery input[type="checkbox"]:checked {
+            border-color: #432b9b;
+        }
+
+        form .delivery input[type="checkbox"]::after {
+            position: absolute;
+            left: 5px;
+            bottom: 1px;
+            width: 5px;
+            height: 15px;
+            content: "";
+            border-style: solid;
+            border-width: 0 3px 3px 0;
+            border-color: #432b9b;
+            transform: rotate(45deg);
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        form .delivery input[type="checkbox"]:checked::after {
+            opacity: 1;
+        }
+
+        form .note label {
+            display: block;
+            margin: auto;
+            margin-bottom: 5px;
+        }
+
+        form .note textarea {
+            display: block;
+            margin: auto;
+            border-radius: 5px;
+            /* 拒絕使用者調整尺寸 */
+            resize: none;
+        }
+
+        form .submit {
+            text-align: center;
+        }
+
+        form .submit input[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 900;
+            color: #fff;
+            background-color: #896afa;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form .submit input[type="submit"]:hover {
+            background-color: #432b9b;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">自學網頁の嬰兒教材：第5課 ── 用力送出表單</h1>
+
+    <h1>後台管理</h1>
+    <h2>新增產品</h2>
+    <form action="/add-product" method="post" target="_self">
+        <div class="product">
+            <label for="product">產品名稱</label>
+            <input type="text" name="product" id="product" placeholder="請輸入產品名稱" required>
+        </div>
+
+        <div class="price">
+            <label for="price">價格</label>
+            <input type="text" name="price" id="price" placeholder="請輸入價格" required>
+        </div>
+
+        <div class="outfit">
+            <label for="outfit">類別</label>
+            <select name="outfit" id="outfit" required>
+                <option value="" disabled selected>請選擇衣物類別</option>
+                <option value="top">上衣</option>
+                <option value="coat">外套</option>
+                <option value="bottom">下身</option>
+                <option value="accessories">配件</option>
+            </select>
+        </div>
+
+        <div class="gender">
+            <label for="">性別</label>
+            <div class="gender-radio">
+                <input type="radio" name="gender" id="male" value="male" required>
+                <label for="male">男</label>
+                <input type="radio" name="gender" id="female" value="female" required>
+                <label for="female">女</label>
+            </div>
+        </div>
+
+        <div class="delivery">
+            <label for="delivery">是否免運費</label>
+            <input type="checkbox" name="delivery" id="delivery">
+        </div>
+
+        <div class="note">
+            <label for="note">備註</label>
+            <textarea name="note" id="note" cols="30" rows="10" placeholder="請輸入備註"></textarea>
+        </div>
+
+        <div class="submit">
+            <input type="submit" value="送出">
+        </div>
+    </form>
+</body>
+
+</html>

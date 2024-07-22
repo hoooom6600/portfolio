@@ -1,0 +1,7 @@
+CREATE TABLE records (
+    id INTEGER PRIMARY KEY,
+    status TEXT NOT NULL,
+    name TEXT NOT NULL,
+    time TEXT NOT NULL,
+    version TEXT NOT NULL
+);

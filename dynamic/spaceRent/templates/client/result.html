@@ -1,0 +1,167 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+Result
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <div class="container text-center">
+        <h2 class="section-title text-center py-3 py-md-5">Result</h2>
+        <form action="/search" method="get" class="my-2 mx-auto w-75">
+            <div class="input-group">
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="floatingSelect" name="place"
+                        aria-label="Floating label select example">
+                        {% if not place %}
+                        <option selected disabled value="">Choose a place</option>
+                        {% else %}
+                        <option disabled value="">Choose a place</option>
+                        {% endif %}
+                        {% for place_item in places %}
+                        {% if place == place_item %}
+                        <option selected value="{{ place_item }}">{{ place_item }}</option>
+                        {% else %}
+                        <option value="{{ place_item }}">{{ place_item }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="floatingSelect">Place</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="datetime-local" class="form-control" id="dateStart" name="start" value="{{ start }}"
+                        placeholder="Date Start" min="" max="" step="1800" required>
+                    <label for="date">Date</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="datetime-local" class="form-control" id="dateEnd" name="end" value="{{ end }}"
+                        placeholder="Date End" min="" max="" step="1800" required>
+                    <label for="date">Date</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="headcount" name="headcount" value="{{ headcount }}"
+                        placeholder="Headcount" min="1" step="1" required>
+                    <label for="headcount">Headcount</label>
+                </div>
+                <input type="hidden" id="lag" name="lag" value="">
+            </div>
+            <button type="submit" class="btn btn-success w-50"><i class="fa-solid fa-magnifying-glass"></i>
+                Search</button>
+        </form>
+
+
+        <div class="row">
+            <div class="my-2">
+                <p class="text-start">There are {{ results | length }} result(s) match your condition.
+                </p>
+                {% if wrong_date %}
+                <p class="text-center">Please check the dates are valid. The duration should be at least 1 hour. And the
+                    minute should be 00 or 30.
+                </p>
+                {% endif %}
+            </div>
+            {% for space in results %}
+            <div class="col-12 col-md-3 mb-3">
+                <div class="card">
+                    <img src="{{ space.img }}" class="card-img-top img-fluid" alt="...">
+                    <div class="card-body px-2">
+                        <div class="txt text-start d-inline-block align-middle">
+                            <div class="title mb-2 me-4">
+                                <h5 class="card-title d-inline-block mb-0 me-3 align-middle">{{ space.name }}</h5>
+                                <span class="small">
+                                    <i class="fa-solid fa-user align-middle"></i>
+                                    <span class=" align-middle">{{ space.capacity }}</span>
+                                </span>
+                            </div>
+                            <p class="card-text">$NTD {{ space.price }} / hr</p>
+                        </div>
+                        <a href="{{ url_for('search', start=start, end=end, room=space.name) }}"
+                            class="btn btn-success fs-5 align-middle">Pick</a>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+    {% if page %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page == 1 %}
+            <li class="page-item">
+                <a class="page-link disabled" aria-label="First page">
+                    <span aria-hidden="true"><i class="fa-solid fa-backward-step"></i></span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('search', place=place, start=start, end=end, headcount=headcount, page=1) }}"
+                    aria-label="First page">
+                    <span aria-hidden="true"><i class="fa-solid fa-backward-step"></i></span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('search', place=place, start=start, end=end, headcount=headcount, page=page-1) }}"
+                    aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa-solid fa-angle-left"></i></span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link disabled" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa-solid fa-angle-left"></i></span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for p in range(1, total_pages+1) %}
+            {% if p == page %}
+            <li class="page-item active"><a class="page-link">{{ p }} / {{ total_pages }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page < total_pages %} <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('search', place=place, start=start, end=end, headcount=headcount, page=page+1) }}"
+                    aria-label="Next page">
+                    <span aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
+                </a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link disabled" aria-label="Next page">
+                        <span aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if page == total_pages %}
+                <li class="page-item">
+                    <a class="page-link disabled" aria-label="Final page">
+                        <span aria-hidden="true"><i class="fa-solid fa-forward-step"></i></span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('search', place=place, start=start, end=end, headcount=headcount, page=total_pages) }}"
+                        aria-label="Final page">
+                        <span aria-hidden="true"><i class="fa-solid fa-forward-step"></i></span>
+                    </a>
+                </li>
+                {% endif %}
+
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+{% endblock %}

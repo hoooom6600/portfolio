@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS50 Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <!-- bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div class="light-switch float-end m-3 position-relative z-5">
+        <button class="btn rounded btn-light" id="lightModeBtn"><i class="fa-regular fa-sun"></i></button>
+        <button class="btn rounded btn-dark text-white" id="darkModeBtn"><i class="fa-solid fa-moon"></i></button>
+    </div>
+    <div class="container-fluid position-absolute start-50 top-50 translate-middle text-center z-n1">
+        <div class="main">
+            <h2 class="m-0" id="operator"></h2>
+            {% if normal %}
+            <h1 class="fw-bold mb-3">CS50 Tic-Tac-Toe Normal</h1>
+            {% endif %}
+            {% if advanced %}
+            <h1 class="fw-bold mb-3">CS50 Tic-Tac-Toe Advanced</h1>
+            {% endif %}
+            <div class="btn-group mb-3" id="modeSwitch" role="group" aria-label="buttons group">
+                {% if normal %}
+                <a href="/advanced" class="btn btn-outline-primary">Go advanced</a>
+                <a href="/" class="btn btn-outline-primary">New round</a>
+                {% endif %}
+
+                {% if advanced %}
+                <a href="/" class="btn btn-outline-primary">Go normal</a>
+                <a href="/advanced" class="btn btn-outline-primary">New round</a>
+                {% endif %}
+            </div>
+
+            <table class="table table-bordered align-middle w-auto m-auto fs-1" id="blocks">
+            </table>
+        </div>
+
+    </div>
+    <div class="modal fade" id="resultModal" aria-hidden="true" aria-labelledby="resultModalToggleLabel" tabindex="-1"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="resultModalToggleLabel">Result</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h2 id="status"></h2>
+                    <h3>TIME</h3>
+                    <h3 id="timeSpend"></h3>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <div class="btn-group">
+                        <a href="/" class="btn btn-outline-primary d-flex align-items-center justify-content-center">New
+                            normal round</a>
+                        <a href="/advanced"
+                            class="btn btn-outline-primary d-flex align-items-center justify-content-center">New
+                            advanced
+                            round</a>
+                    </div>
+
+                    <button class="btn btn-primary" data-bs-target="#recordFormModal" data-bs-toggle="modal">Submit
+                        record</button>
+
+                    <button class="btn btn-primary" data-bs-target="#recordsModal" data-bs-toggle="modal"
+                        id="seeRecords">See all
+                        records</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="recordsModal" aria-hidden="true" aria-labelledby="recordsModalToggleLabel" tabindex="-1"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {% if normal %}
+                    <h1 class="modal-title fs-5" id="recordsModalToggleLabel">Normal Records (latest 10 records)</h1>
+                    {% endif %}
+                    {% if advanced %}
+                    <h1 class="modal-title fs-5" id="recordsModalToggleLabel">Advanced Records (latest 10 records)</h1>
+                    {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <table class="table table-striped" id="records">
+                        <!-- insert records -->
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-target="#resultModal" data-bs-toggle="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="recordFormModal" aria-hidden="true" aria-labelledby="recordFormModalToggleLabel"
+        tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="recordFormModalToggleLabel">Record Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {% if normal %}
+                    <form action="/recordNormal" method="post" id="submitForm">
+                        <input type="hidden" name="status" id="recordStatus" value="" required>
+                        <input type="hidden" name="time" id="recordTime" value="" required>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                        <br>
+                        <button type="submit" id="submit" class="btn btn-primary">Submit record</button>
+                    </form>
+                    {% endif %}
+                    {% if advanced %}
+                    <form action="/recordAdvanced" method="post" id="submitForm">
+                        <input type="hidden" name="status" id="recordStatus" value="" required>
+                        <input type="hidden" name="time" id="recordTime" value="" required>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                        <br>
+                        <button type="submit" id="submit" class="btn btn-primary">Submit record</button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-target="#resultModal" data-bs-toggle="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    {% if advanced %}
+    <button type="button" class="btn btn-primary d-none" id="pssBtn" data-bs-toggle="modal" data-bs-target="#pss">
+        Paper Scissors Stone
+    </button>
+
+    <div class="modal fade pss-modal" id="pss" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close d-none" id="pssCloseBtn" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+                <div class="modal-body d-flex justify-content-between align-content-center">
+                    <button type="button" class="btn btn-outline-primary rounded-circle" value="paper"><i
+                            class="fa-regular fa-hand"></i></button>
+                    <button type="button" class="btn btn-outline-primary rounded-circle" value="scissors"><i
+                            class="fa-regular fa-hand-scissors"></i></button>
+                    <button type="button" class="btn btn-outline-primary rounded-circle" value="stone"><i
+                            class="fa-regular fa-hand-back-fist"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+
+    <!-- <script src="/static/auto.js"></script> -->
+    {% if normal %}
+    <script src="/static/normal.js"></script>
+    {% endif %}
+
+    {% if advanced %}
+    <script src="/static/advanced.js"></script>
+    {% endif %}
+
+</body>
+
+</html>

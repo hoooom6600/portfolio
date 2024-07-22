@@ -1,0 +1,25 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+{{ article.title }}
+{% endblock %}
+
+{% block main %}
+<div class="container py-3">
+
+    <div id="carousel" class="carousel slide mb-3">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ article.cover }}" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+
+
+    <h2>{{ article.title }}</h2>
+    <p>{{ article.date }}</p>
+
+    {{ article.content | safe }}
+
+</div>
+{% endblock %}

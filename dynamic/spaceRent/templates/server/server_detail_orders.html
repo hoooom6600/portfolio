@@ -1,0 +1,156 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+{% if order %}
+Staff System: Order: {{ order.id }}
+{% else %}
+Staff System: Order: {{ request.form.id }}
+{% endif %}
+{% endblock %}
+
+{% block main %}
+<div class="container my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Edit Orders</h2>
+    {% if order_update_fail or invalid_update %}
+    <p class="text-danger text-center">Please check if every information is filled.</p>
+    <p class="text-danger text-center">Or if the order has been canceled or the time is later than the start time.</p>
+    {% endif %}
+    <form action="/orders_update" method="post">
+        {% if order %}
+        <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+                <label for="id" class="form-label"><span class="text-danger me-1">*</span>ID</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="ID" value="{{ order.id }}"
+                    required readonly>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+                <label for="application_date" class="form-label"><span class="text-danger me-1">*</span>Application
+                    Date</label>
+                <input type="text" class="form-control" id="application_date" name="application_date"
+                    placeholder="Application Date" value="{{ order.application_date }}" required readonly>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+                <label for="status" class="form-label"><span class="text-danger me-1">*</span>Status</label>
+                <input type="text" class="form-control" id="status" name="status" placeholder="Status"
+                    value="{{ order.status }}" required readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-3 mb-3">
+                <label for="username" class="form-label"><span class="text-danger me-1">*</span>Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                    value="{{ order.username }}" required readonly>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+                <label for="name" class="form-label"><span class="text-danger me-1">*</span>Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                    value="{{ order.name }}" required>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+                <label for="email" class="form-label"><span class="text-danger me-1">*</span>Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                    value="{{ order.email }}" required>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+                <label for="phone" class="form-label"><span class="text-danger me-1">*</span>Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone"
+                    value="{{ order.phone }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label for="start" class="form-label"><span class="text-danger me-1">*</span>Start (UTC+8)</label>
+                <input type="datetime-local" class="form-control" id="start" name="start" placeholder="Start"
+                    value="{{ order.start }}" required readonly>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label for="end" class="form-label"><span class="text-danger me-1">*</span>End (UTC+8)</label>
+                <input type="datetime-local" class="form-control" id="end" name="end" placeholder="End"
+                    value="{{ order.end }}" required readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="note" class="form-label">Note</label>
+                <textarea class="form-control" id="note" name="note" placeholder="Note" style="height: 300px;"
+                    readonly>{{ order.note }}</textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3 text-end">
+                <a href="/server_orders" class="btn btn-secondary">Cancel</a>
+                <a href="{{ url_for('delete_orders', id=order.id) }}" class="btn btn-danger">Delete</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+                <label for="id" class="form-label"><span class="text-danger me-1">*</span>ID</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="ID" value="{{ request.form.id }}"
+                    required readonly>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+                <label for="application_date" class="form-label"><span class="text-danger me-1">*</span>Application
+                    Date</label>
+                <input type="text" class="form-control" id="application_date" name="application_date"
+                    placeholder="Application Date" value="{{ request.form.application_date }}" required readonly>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+                <label for="status" class="form-label"><span class="text-danger me-1">*</span>Status</label>
+                <input type="text" class="form-control" id="status" name="status" placeholder="Status"
+                    value="{{ request.form.status }}" required readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-3 mb-3">
+                <label for="username" class="form-label"><span class="text-danger me-1">*</span>Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                    value="{{ request.form.username }}" required readonly>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+                <label for="name" class="form-label"><span class="text-danger me-1">*</span>Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                    value="{{ request.form.name }}" required>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+                <label for="email" class="form-label"><span class="text-danger me-1">*</span>Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                    value="{{ request.form.email }}" required>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+                <label for="phone" class="form-label"><span class="text-danger me-1">*</span>Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone"
+                    value="{{ request.form.phone }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label for="start" class="form-label"><span class="text-danger me-1">*</span>Start (UTC+8)</label>
+                <input type="datetime-local" class="form-control" id="start" name="start" placeholder="Start"
+                    value="{{ request.form.start }}" required readonly>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label for="end" class="form-label"><span class="text-danger me-1">*</span>End (UTC+8)</label>
+                <input type="datetime-local" class="form-control" id="end" name="end" placeholder="End"
+                    value="{{ request.form.end }}" required readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="note" class="form-label">Note</label>
+                <textarea class="form-control" id="note" name="note" placeholder="Note" style="height: 300px;"
+                    readonly>{{ request.form.note }}</textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3 text-end">
+                <a href="/server_orders" class="btn btn-secondary">Cancel</a>
+                <a href="{{ url_for('delete_orders', id=request.form.id) }}" class="btn btn-danger">Delete</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

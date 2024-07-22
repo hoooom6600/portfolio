@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 系列八：第3課 ── 分帳應用程式(RWD)</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        }
+
+        #wrap {
+            display: flex;
+            height: 100vh;
+        }
+
+        .bills {
+            order: 2;
+            width: 100%;
+            overflow-y: auto;
+            background-color: red;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fae0bf;
+        }
+
+        .members {
+            order: 1;
+            /* width: 25%; */
+            overflow-y: auto;
+            background-color: #9C6644;
+            /*  */
+            display: none;
+        }
+
+        .members.active {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            /* z-index: 1; */
+        }
+
+        i.member-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 26px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border: 2px solid #fff;
+            box-sizing: border-box;
+            border-radius: 50%;
+            /* z-index: 100; */
+            text-align: center;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            padding: 10px 0;
+            color: #fff;
+        }
+
+        .header h2 {
+            font-size: 30px;
+        }
+
+        .header-button {
+            padding: 5px 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px 20px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #eec170;
+            color: #5c4742;
+            font-weight: 900;
+        }
+
+        .header .money {
+            display: flex;
+            margin-top: 10px;
+
+        }
+
+        .header .total,
+        .header .average {
+            font-weight: 900;
+            margin: 0 10px;
+        }
+
+        .bills .header {
+            background-color: #7F5539;
+        }
+
+        .bills table {
+            width: 95%;
+            margin: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        .bills table thead {
+            background-color: #7f5539;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .bills table thead th,
+        .bills table tbody td {
+            padding: 10px;
+            font-size: 20px;
+        }
+
+        .bills table tbody tr {
+            color: #5c4742;
+        }
+
+        .bills table tbody tr td:last-child i {
+            cursor: pointer;
+        }
+
+        .bills table tbody tr:nth-child(2n) {
+            background-color: #eec170;
+        }
+
+        col.actions-col {
+            width: 10%;
+        }
+
+        col.data-cols {
+            width: calc(90% / 3);
+        }
+
+        .members .header {
+            background-color: #9c6644;
+        }
+
+        .members .header button {
+            margin: 10px 0 0;
+        }
+
+        .members .header .member-count {
+            margin-top: 10px;
+            font-weight: 900;
+        }
+
+        .member-list li {
+            display: flex;
+            justify-content: center;
+            margin: 10px;
+            /* 扣除左右各 10px margin */
+            width: calc(100% - 20px);
+        }
+
+        .member-list li p {
+            /* 按鈕50px寬 */
+            width: calc(100% - 50px);
+            background-color: #fae0bf;
+            border-radius: 5px 0 0 5px;
+            display: flex;
+        }
+
+        .member-list li p span {
+            font-size: 18px;
+            color: #5c4742;
+            display: inline-block;
+            line-height: 50px;
+            width: 50%;
+            text-align: left;
+            margin: 0 10px;
+            overflow: auto;
+            white-space: nowrap;
+        }
+
+        .member-list li p span::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .member-list li p span.balanced {
+            color: #318fdd;
+        }
+
+        .member-list li p span.to-give {
+            color: #ef233c;
+        }
+
+        .member-list li p span.to-get {
+            color: #33a765;
+        }
+
+
+        .member-list li button {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 20px;
+            border: none;
+            flex-shrink: 0;
+            border-radius: 0 5px 5px 0;
+            background-color: #bb9457;
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        #wrap ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #wrap ::-webkit-scrollbar-track {
+            background-color: rgba(70, 70, 70, .5);
+        }
+
+        #wrap ::-webkit-scrollbar-thumb {
+            background-color: rgba(200, 200, 200, .5);
+            border-radius: 5px;
+            transition: .5s;
+        }
+
+        #wrap ::-webkit-scrollbar-thumb:hover {
+            background-color: #fefee3;
+        }
+
+
+
+        .modal {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(120, 120, 120, .7);
+            display: none;
+        }
+
+        .modal>div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #faedcd;
+            padding: 50px;
+            display: none;
+        }
+
+        .modal.active,
+        .modal>div.active {
+            display: flex;
+        }
+
+        .modal h3 {
+            font-size: 26px;
+        }
+
+        .modal input {
+            padding: 10px;
+            border: 1px solid #808080;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .modal select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #808080;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .modal .empty-warn {
+            align-self: start;
+            padding-left: 10px;
+            color: #f00;
+            display: none;
+        }
+
+        .modal .empty-warn.active {
+            display: block;
+        }
+
+
+        .modal .modal-block-btn {
+            padding: 5px 20px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            font-weight: 900;
+            border-radius: 5px;
+            background-color: #7f5539;
+            color: #fff;
+            position: relative;
+            bottom: -20px;
+        }
+
+        .modal .close-X-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            line-height: 30px;
+            text-align: center;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            font-weight: 900;
+            background-color: #7f5539;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .warn {
+            text-align: center;
+        }
+
+        .modal .warn-content {
+            line-height: 2.5;
+            margin: 20px 0;
+        }
+
+        .modal .btns-group {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        @media screen and (min-width: 768px) {
+            .bills {
+                width: 75%;
+            }
+
+            .members {
+                width: 25%;
+                display: block;
+            }
+
+            .members.active {
+                width: 25%;
+                position: static;
+            }
+
+            i.member-icon {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .warn {
+                width: 90%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <h1 style="text-align: center; line-height: 70px;">JavaScript 系列八：第3課 ── 分帳應用程式(RWD)</h1>
+
+    <div id="wrap">
+        <!-- SCREEN -->
+
+        <div class="bills">
+            <div class="header">
+                <h2>{{ text.title.bill }}</h2>
+                <!-- 行動版功能：點擊人頭icon以開關成員清單 -->
+                <i class="fa-solid fa-user member-icon" @click="openMemberList"></i>
+
+                <div class="controls">
+                    <button class="header-button" @click="openModalNewBill">{{ text.button.newBill }}</button>
+                    <button class="header-button" @click="openModalClearBill">{{ text.button.clearBill }}</button>
+                </div>
+                <div class="money">
+                    <div class="total">{{ text.title.total + total }}</div>
+                    <div class="average">{{ text.title.average + average }}</div>
+                </div>
+
+            </div>
+
+            <table>
+                <colgroup>
+                    <col span="3" class="data-cols">
+                    <col span="1" class="actions-col">
+                </colgroup>
+
+                <thead>
+                    <tr>
+                        <th>{{ text.table.payment }}</th>
+                        <th>{{ text.table.amount }}</th>
+                        <th>{{ text.table.payer }}</th>
+                        <th>{{ text.table.actions }}</th>
+                    </tr>
+                </thead>
+
+                <!-- 所有帳款表單 -->
+                <tbody>
+                    <tr v-for="(bill,index) in bills">
+                        <td>{{ bill.payment }}</td>
+                        <td>{{ bill.amount }}</td>
+                        <td>{{ bill.payer }}</td>
+                        <td><i @click="openModalBillEditor(bill, index)" class="fa-solid fa-pen-to-square"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+        <div class="members">
+            <div class="header">
+                <!-- 行動版功能：點擊人頭icon以開關成員清單 -->
+                <i class="fa-solid fa-user member-icon" @click="openMemberList"></i>
+
+                <h2>{{ text.title.member }}</h2>
+                <button class="header-button" @click="openModalMember">{{ text.button.newMember }}</button>
+                <div class="member-count">{{ text.title.memberCount + memberCount }}</div>
+            </div>
+            <!-- 所有成員表單 -->
+            <ul class="member-list">
+                <li v-for="(member, index) in members">
+                    <p>
+                        <span>{{ member.name }}</span>
+                        <!-- <span
+                            :class="{balanced: member.amount === 0 || member.amount === '', 'to-give': member.amount < 0, 'to-get': member.amount > 0}">{{
+                            member.status + member.amount }}</span> -->
+
+
+
+                        <span v-if="member.amount < 0" class="to-give">{{ (member.status) + -1*(member.amount) }}</span>
+                        <span v-else-if="member.amount > 0" class="to-get">{{ member.status + member.amount }}</span>
+                        <span v-else class="balanced">{{ member.status + member.amount }}</span>
+
+                    </p>
+                    <button @click="deleteMember(member.name, index)">{{text.button.close}}</button>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+
+
+
+
+
+
+        <!-- MODEL -->
+        <div class="modal" :class="{active: modalActive.modal}">
+            <!-- 新增成員 -->
+            <div class="newMember-modal" ref="newMemberModal" :class="{active: modalActive.newMember}">
+                <h3>{{ text.title.newMember }}</h3>
+                <input type="text" name="" id="newMemberName" required :placeholder="text.placeholder.newMemberName">
+                <p class="empty-warn">成員不可無名或同名</p>
+                <button class="modal-block-btn" @click="submit">{{ text.button.submit }}</button>
+                <button class="close-X-btn" @click="closeModal">{{ text.button.close }}</button>
+            </div>
+            <!-- 新增款項 -->
+            <div class="newBill-modal" ref="newBillModal" :class="{active: modalActive.newBill}">
+                <h3>{{ text.title.newBill }}</h3>
+                <input type="text" name="" id="newPayment" :placeholder="text.placeholder.newPayment" required>
+                <p class="empty-warn">請輸入新帳款款項</p>
+                <input type="number" name="" id="newAmount" min="1" :placeholder="text.placeholder.newAmount" required>
+                <p class="empty-warn">請輸入新帳款金額<br>金額不可小於等於0</p>
+                <select name="" id="newPayer" required>
+                    <option value="" disabled selected>{{ text.placeholder.newPayer }}</option>
+
+                    <option v-for="member in members" :value="member.name">{{member.name}}</option>
+                </select>
+                <p class="empty-warn">請選擇新帳款付款人</p>
+                <button class="modal-block-btn" @click="submit">{{ text.button.submit }}</button>
+                <button class="close-X-btn" @click="closeModal">{{ text.button.close }}</button>
+            </div>
+            <!-- 修改款項 -->
+            <div class="billEditor-modal" ref="billEditorModal" :class="{active: modalActive.billEditor}">
+                <h3>{{ text.title.billEdit }}</h3>
+                <input type="text" name="" id="editPayment" :placeholder="text.placeholder.newPayment" required>
+                <p class="empty-warn">請輸入編輯後帳款款項</p>
+                <input type="number" name="" id="editAmount" :placeholder="text.placeholder.newAmount" required>
+                <p class="empty-warn">請輸入編輯後帳款金額<br>金額不可小於等於0</p>
+                <select name="" id="editPayer" required>
+                    <option value="" disabled selected>{{ text.placeholder.newPayer }}</option>
+                    <option v-for="member in members" :value="member.name">{{member.name}}</option>
+                </select>
+                <p class="empty-warn">請選擇編輯後帳款付款人</p>
+                <div class="btns-group">
+                    <button class="modal-block-btn" @click="submit">{{ text.button.submit }}</button>
+                    <button class="modal-block-btn" @click="deleteBill">{{ text.button.delete }}</button>
+                </div>
+                <button class="close-X-btn" @click="closeModal">{{ text.button.close }}</button>
+            </div>
+            <!-- 結束旅程 -->
+            <div class="warn" ref="warn" :class="{active: modalActive.clearWarn }">
+                <h3>{{ text.title.clearBill }}</h3>
+                <div class="warn-content">
+                    <p>點擊確認會立即清空所有資料</p>
+                    <p>確定要結束旅程嗎？</p>
+                </div>
+                <button class="modal-block-btn" @click="cleanData">{{ text.button.submit }}</button>
+                <button class="close-X-btn" @click="closeModal">{{ text.button.close }}</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    text: {
+                        title: {
+                            // HOME
+                            bill: '支出清單',
+                            member: '分帳成員',
+                            total: '總消費：',
+                            average: '平均消費：',
+                            memberCount: '人數：',
+
+                            // modal
+                            newBill: '新增款項',
+                            newMember: '新增成員',
+                            clearBill: '旅程結束',
+                            billEdit: '款項編輯'
+                        },
+                        button: {
+                            // HOME
+                            newBill: '新增款項',
+                            newMember: '新增成員',
+                            clearBill: '旅程結束',
+
+                            // HOME & modal
+                            close: 'X',
+
+                            // modal
+                            submit: '確認',
+                            delete: '刪除'
+                        },
+                        table: {
+                            payment: '款項',
+                            amount: '金額',
+                            payer: '付款人',
+                            actions: '編輯'
+                        },
+                        placeholder: {
+                            newMemberName: '請輸入成員姓名',
+                            newPayment: '請輸入款項名稱',
+                            newAmount: '請輸入消費金額',
+                            newPayer: '請選擇付款人'
+                        }
+                    },
+                    bills: [],
+                    members: [],
+                    memberCount: 0,
+                    modalActive: {
+                        modal: false,
+                        newMember: false,
+                        newBill: false,
+                        billEditor: false,
+                        clearWarn: false
+                    },
+                    total: 0,
+                    average: 0,
+                    currentEdit: null
+                }
+            },
+            watch: {
+                bills: {
+                    handler(newValue, oldValue) {
+                        localStorage.setItem('bills', JSON.stringify(this.bills))
+                    },
+                    deep: true
+                },
+                members: {
+                    handler(newValue, oldValue) {
+                        localStorage.setItem('members', JSON.stringify(this.members))
+                    },
+                    deep: true
+                },
+                memberCount(newValue, oldValue) {
+                    localStorage.setItem('memberCount', JSON.stringify(this.memberCount))
+                },
+                total(newValue, oldValue) {
+                    localStorage.setItem('total', JSON.stringify(this.total))
+                },
+                average(newValue, oldValue) {
+                    localStorage.setItem('average', JSON.stringify(this.average))
+                }
+
+            },
+            methods: {
+                openModalNewBill() {
+                    this.modalActive.modal = true;
+                    this.modalActive.newBill = true;
+                },
+                openModalBillEditor(bill, index) {
+                    this.modalActive.modal = true;
+                    this.modalActive.billEditor = true;
+                    // 取得選擇要編輯的原始資料，然後把原始資料自動附在修改面板上
+                    this.currentEdit = {
+                        payment: bill.payment,
+                        amount: bill.amount,
+                        payer: bill.payer,
+                        index: index
+                    }
+
+                    console.log(this.currentEdit)
+
+                    let billEditorModal = document.querySelector('.billEditor-modal');
+                    let editPayment = billEditorModal.querySelector('#editPayment');
+                    let editAmount = billEditorModal.querySelector('#editAmount');
+                    let editPayer = billEditorModal.querySelector('#editPayer');
+
+                    editPayment.value = this.currentEdit.payment;
+                    editAmount.value = this.currentEdit.amount;
+                    editPayer.value = this.currentEdit.payer;
+
+                },
+                openModalMember() {
+                    this.modalActive.modal = true;
+                    this.modalActive.newMember = true;
+                },
+                openModalClearBill() {
+                    this.modalActive.modal = true;
+                    this.modalActive.clearWarn = true;
+                },
+                deleteMember(memberName, index) {
+                    // 如果沒有任何帳款，就無法迴圈，因此可以直接刪除成員
+                    // JS中，兩個長得一模一樣的array也不會相等，因為他們是不同物件對象
+                    // 因此要判斷是否為空帳單，要用length比較
+                    // 因為是空帳單，所以不用重新計算收支
+                    if (this.bills.length === 0) {
+                        this.members.splice(index, 1);
+                        this.memberCount--;
+                    }
+                    // 有帳款就迴圈確定是否刪到曾付款之成員
+                    else {
+                        let isEverPaid = false;
+                        for (let bill of this.bills) {
+                            // 不能刪掉曾付款的成員
+                            if (bill.payer === memberName) {
+                                isEverPaid = true;
+                                alert('刪除者曾付款，請先修改對應款項之付款人，再行刪除');
+                                // 不break就會一直跳視窗，因為有多個帳款之付款人會跟要刪掉的成員名字相同
+                                break;
+                            }
+                        }
+                        // 沒有付過錢就可以刪掉
+                        if (!isEverPaid) {
+                            this.members.splice(index, 1);
+                            this.memberCount--;
+
+                            // 恢復驗證過濾
+                            isEverPaid = false;
+                            // 因人頭數改變，重新計算收支
+                            this.calculate();
+                        }
+                    }
+                },
+                calculate() {
+                    // 沒帳款的情境：1.第一次使用本工具 2.曾經有帳款，但手動「逐一」刪到沒有 3.點擊結束旅程後
+                    if (this.bills.length === 0) {
+                        this.total = 0;
+                        this.average = 0;
+                        for (let member of this.members) {
+                            member.amount = '';
+                            member.status = '無須收付';
+                        }
+                    }
+                    // 有帳款才開始計算
+                    if (this.bills.length !== 0) {
+                        // 因為有更動就會呼叫一次calculate，然後每次calculate都遍歷this.bills，所以計算總消費之前要先初始化，避免每次呼叫又累積上去，就會數據失真
+                        this.total = 0;
+                        this.average = 0;
+
+                        // 每人已支付金額
+                        let perPaid = {};
+                        for (let bill of this.bills) {
+                            // 計算總消費&一人平均消費
+                            this.total += bill.amount;
+                            this.average = parseFloat((this.total / this.memberCount).toFixed(2));
+
+                            // 計算每人已支付金額
+                            for (let member of this.members) {
+                                // 有人可能沒付過錢，但仍在成員名單裡
+                                if (!perPaid[member.name.toString()]) {
+                                    perPaid[member.name.toString()] = 0;
+                                    // console.log(perPaid[(member.name).toString()])
+                                }
+                                if (member.name === bill.payer) {
+                                    perPaid[member.name.toString()] += bill.amount;
+                                    console.log(perPaid)
+                                }
+                            }
+                        }
+                        console.log(perPaid)
+
+                        // 結算金流狀況
+                        for (let member of this.members) {
+                            if (perPaid[member.name] - this.average > 0) {
+                                member.status = '應收';
+                                member.amount = parseFloat((perPaid[member.name] - this.average).toFixed(2));
+                            }
+                            else if (perPaid[member.name] - this.average === 0) {
+                                member.status = '';
+                                member.amount = '無須收付';
+                            }
+                            else {
+                                member.status = '應付';
+                                // member.amount = this.average - perPaid[member.name];
+                                member.amount = parseFloat((perPaid[member.name] - this.average).toFixed(2));
+                            }
+                        }
+                    }
+                },
+
+                submit(event) {
+                    if (event) {
+                        // 取得啟動按鈕的所屬modal容器是誰
+                        let modalUnit = event.target.closest('div');
+
+                        // // 取得四大modal
+                        // let newMemberModal = this.$refs.newMemberModal;
+                        // let newBillModal = this.$refs.newBillModal;
+                        // let billEditorModal = this.$refs.billEditorModal;
+                        // let warn = this.$refs.warn;
+
+
+
+                        // 來自新增成員的按鈕事件
+                        if (modalUnit === document.querySelector('.newMember-modal')) {
+                            // 新成員姓名
+                            let newMemberName = modalUnit.querySelector('#newMemberName');
+                            // 新成員不可無名
+                            if (newMemberName.value.trim() !== '') {
+
+                                // 成員名不可相同
+                                let isRepeat = false;
+                                for (let member of this.members) {
+                                    if (member.name === newMemberName.value.trim()) {
+                                        alert('成員姓名重複')
+                                        newMemberName.nextSibling.classList.add('active');
+                                        isRepeat = true;
+                                        break;
+                                    }
+                                }
+                                // 驗證成功
+                                if (!isRepeat || this.members === null) {
+                                    let person = {
+                                        name: modalUnit.querySelector('#newMemberName').value,
+                                        status: '無須收付',
+                                        amount: 0
+                                    }
+                                    this.members.push(person);
+                                    this.memberCount++;
+
+                                    console.log(this.members)
+
+                                    // 關閉視窗、恢復驗證過濾
+                                    isRepeat = false;
+                                    this.closeModal();
+
+                                    // 因人頭數更新，重新計算收支
+                                    this.calculate()
+                                }
+                            }
+                            else {
+                                alert('請輸入成員姓名')
+                                newMemberName.nextSibling.classList.add('active');
+                            }
+                        }
+
+                        // 來自新增款項的按鈕事件
+                        if (modalUnit === document.querySelector('.newBill-modal')) {
+                            // 新帳款款項
+                            let newPayment = modalUnit.querySelector('#newPayment');
+                            // 新帳款金額
+                            let newAmount = modalUnit.querySelector('#newAmount');
+                            // 新帳款付款人
+                            let newPayer = modalUnit.querySelector('#newPayer');
+
+                            // 因使用者可能輸入過一次但驗證失敗，而後沒有關閉新款項modal，逕行再次輸入，故有合格的表單就清除警語顯示
+                            // 若尚有不合格者，會在下一個表單大驗證的if語句裡執行顯示
+                            let emptyWarns = document.querySelectorAll('p.empty-warn')
+                            for (let emptyWarn of emptyWarns) {
+                                emptyWarn.classList.remove('active');
+                            }
+
+                            // 表單驗證
+                            if (newPayment.value === '' || isNaN(parseFloat(newAmount.value)) || parseFloat(newAmount.value) <= 0 || newPayer.value === '') {
+
+                                // 不合格資料顯示對應的警語
+                                if (newPayment.value === '') {
+                                    alert('請輸入新帳款款項');
+                                    newPayment.nextSibling.classList.add('active');
+                                }
+
+                                // isNaN()是JS原生內建函式，因NaN不會普通相等也不會嚴格相等於任何也是NaN的值，包含跟自己比較也不會相等
+                                // 為避免不理性使用者，再次確認金額格式
+                                if (isNaN(parseFloat(newAmount.value))) {
+                                    alert('請輸入新帳款金額');
+                                    newAmount.nextSibling.classList.add('active');
+                                }
+                                if (parseFloat(newAmount.value) <= 0) {
+                                    alert('新帳款金額不可小於等於0');
+                                    newAmount.nextSibling.classList.add('active');
+                                }
+                                if (newPayer.value === '') {
+                                    alert('請選擇新帳款付款人');
+                                    newPayer.nextSibling.classList.add('active');
+                                }
+                            }
+                            else {
+                                let newBill = {
+                                    payment: newPayment.value,
+                                    amount: parseFloat(newAmount.value),
+                                    payer: newPayer.value
+                                };
+
+                                this.bills.push(newBill);
+
+                                // 關閉視窗、清除newBill
+                                newBill = null;
+                                this.closeModal();
+
+                                // 因總消費更新，重新計算收支
+                                this.calculate();
+
+                                console.log(this.bills);
+                            }
+                        }
+
+                        // 來自編輯款項的按鈕事件
+                        if (modalUnit === document.querySelector('.billEditor-modal').querySelector('.btns-group')) {
+                            // 因修改資料的modal的按鈕HTML架構不同，因此不可直接從modalUnit找到子物件為表單輸入tag
+                            let billEditorModal = document.querySelector('.billEditor-modal');
+
+                            // 修改帳款款項
+                            let editPayment = billEditorModal.querySelector('#editPayment');
+                            // 修改帳款金額
+                            let editAmount = billEditorModal.querySelector('#editAmount');
+                            // 修改帳款付款人
+                            let editPayer = billEditorModal.querySelector('#editPayer');
+
+                            // 因使用者可能輸入過一次但驗證失敗，而後沒有關閉新款項modal，逕行再次輸入，故有合格的表單就清除警語顯示
+                            // 若尚有不合格者，會在下一個表單大驗證的if語句裡執行顯示
+                            let emptyWarns = document.querySelectorAll('p.empty-warn')
+                            for (let emptyWarn of emptyWarns) {
+                                emptyWarn.classList.remove('active');
+                            }
+
+                            // 表單驗證
+                            if (editPayment.value === '' || isNaN(parseFloat(editAmount.value)) || parseFloat(editAmount.value) <= 0 || editPayer.value === '') {
+
+                                // 不合格資料顯示對應的警語
+                                if (editPayment.value === '') {
+                                    alert('請輸入編輯後帳款款項');
+                                    editPayment.nextSibling.classList.add('active');
+                                }
+
+                                // isNaN()是JS原生內建函式，因NaN不會普通相等也不會嚴格相等於任何也是NaN的值，包含跟自己比較也不會相等
+                                // 為避免不理性使用者，再次確認金額格式
+                                if (isNaN(parseFloat(editAmount.value))) {
+                                    alert('請輸入編輯後帳款金額');
+                                    editAmount.nextSibling.classList.add('active');
+                                }
+                                if (parseFloat(editAmount.value) <= 0) {
+                                    alert('編輯後帳款金額不可小於等於0');
+                                    editAmount.nextSibling.classList.add('active');
+                                }
+                                if (editPayer.value === '') {
+                                    alert('請選擇編輯後帳款付款人');
+                                    editPayer.nextSibling.classList.add('active');
+                                }
+                            }
+
+                            // 表單合格
+                            else {
+                                // 將修改結果更新到對應帳款
+                                for (let billIndex in this.bills) {
+                                    // for..in的索引值是字串!!!!
+                                    if (parseFloat(billIndex) === this.currentEdit.index) {
+                                        console.log(this.bills[billIndex])
+
+                                        this.bills[billIndex].payment = editPayment.value;
+                                        this.bills[billIndex].amount = parseFloat(editAmount.value);
+                                        this.bills[billIndex].payer = editPayer.value;
+                                    }
+                                }
+
+                                // 關閉視窗、清除this.currentEdit
+                                this.currentEdit = null;
+                                this.closeModal();
+
+
+                                // 因修改了資料，要重新計算收支
+                                this.calculate();
+
+                                console.log(this.bills)
+                            }
+                        }
+
+                    }
+
+                },
+
+                cleanData() {
+                    this.bills = [];
+                    this.members = [];
+                    this.memberCount = 0;
+                    this.total = 0;
+                    this.average = 0;
+                    this.closeModal();
+                },
+
+                deleteBill() {
+                    for (let billIndex in this.bills) {
+                        if (parseFloat(billIndex) === this.currentEdit.index &&
+                            this.bills[billIndex].payment === this.currentEdit.payment &&
+                            this.bills[billIndex].amount === this.currentEdit.amount &&
+                            this.bills[billIndex].payer === this.currentEdit.payer
+                        ) {
+                            this.bills.splice(billIndex, 1);
+                        }
+                    }
+                    // 消費修改，須重新計算收支
+                    this.calculate();
+                    // 關閉面板
+                    this.closeModal();
+                    console.log(this.bills);
+                },
+
+                closeModal() {
+                    // 關閉所有modal
+                    for (let key in this.modalActive) {
+                        this.modalActive[key] = false;
+                    }
+
+                    // 清除輸入要求警語
+                    let emptyWarns = document.querySelectorAll('p.empty-warn')
+                    for (let emptyWarn of emptyWarns) {
+                        emptyWarn.classList.remove('active');
+                    }
+
+                    // 清除所有已輸入但未送出的資料
+                    let allInput = document.querySelectorAll('input');
+                    for (let input of allInput) {
+                        input.value = null;
+                    }
+
+                    let allSelect = document.querySelectorAll('select');
+                    for (let select of allSelect) {
+                        select.selectedIndex = 0;
+                    }
+                },
+                // 行動版功能：點擊人頭icon以開關成員清單
+                openMemberList() {
+                    document.querySelector('div.members').classList.toggle('active');
+                }
+            },
+            mounted() {
+                // 沒有localStorage的初始化
+                this.bills = [];
+                this.members = [];
+                this.memberCount = 0;
+                this.modalActive = {
+                    modal: false,
+                    newMember: false,
+                    newBill: false,
+                    billEditor: false,
+                    clearWarn: false
+                };
+                this.total = 0;
+                this.average = 0;
+                this.currentEdit = null;
+
+                console.log(this.modalActive.modal)
+
+
+                if (localStorage.getItem('bills')) {
+                    this.bills = JSON.parse(localStorage.getItem('bills'));
+                }
+                if (localStorage.getItem('members')) {
+                    this.members = JSON.parse(localStorage.getItem('members'));
+                }
+                if (localStorage.getItem('memberCount')) {
+                    this.memberCount = JSON.parse(localStorage.getItem('memberCount'));
+                }
+                if (localStorage.getItem('total')) {
+                    this.total = JSON.parse(localStorage.getItem('total'));
+                }
+                if (localStorage.getItem('average')) {
+                    this.average = JSON.parse(localStorage.getItem('average'));
+                }
+
+            }
+        }).mount('#wrap');
+    </script>
+</body>
+
+</html>

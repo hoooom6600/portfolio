@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 系列八：第7課 ── 國家資訊與地圖應用程式</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #map {
+            width: 100vw;
+            /* 地圖套件容器需要高度，他不會自動撐開 */
+            height: 100vh;
+            position: relative;
+            /* 如果z-index: -1 ，會無法正常使用地圖套件 */
+            z-index: 0;
+        }
+
+        ul {
+            list-style-position: inside;
+        }
+
+        /* 有的國旗有和預設 background-color 顏色相同，因此改變底色用以凸顯 */
+        .custom-popup .leaflet-popup-content-wrapper,
+        .custom-popup .leaflet-popup-tip {
+            background-color: rgba(240, 240, 240, 1);
+        }
+
+        /* 套件預設 popup 的左右 margin 不同，因而看起來不會置中。此處修正以設為置中 */
+        .custom-popup .leaflet-popup-content {
+            margin: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <h1 style="text-align: center; height: 0; position: relative; z-index: 1;">
+        <span
+            style="background-color: rgba(200, 200, 200, .7); color: rgba(255, 255, 255, .7); position: absolute; top: 0; left: 50%; transform: translateX(-50%);">
+            JavaScript 系列八：第7課
+            ──國家資訊與地圖應用程式
+        </span>
+    </h1>
+
+    <div id="wrap">
+        <div id="map"></div>
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    allData: null,
+                    allCountryCommonName: [],
+                    allFlagSVG: [],
+                    allFlagPNG: [],
+                    allFlagAlt: [],
+                    allCapitalName: [],
+                    allCurrency: [],
+                    allCenterLatLng: [],
+                    markTitle: {
+                        flag: '<strong>Flag: </strong>',
+                        countryName: '<strong>Country Name: </strong>',
+                        capitalName: '<strong>Capital Name: </strong>',
+                        currency: '<strong>Currency: </strong>',
+                        currencyISOcode: 'ISO Code: ',
+                        currencyName: 'Name: ',
+                        currencySymbol: 'Symbol: '
+                    }
+                }
+            },
+            watch: {
+
+            },
+            methods: {
+
+            },
+            mounted() {
+                fetch('https://restcountries.com/v3.1/all', { method: 'GET' })
+                    .then((res) => {
+                        console.log(res.ok);
+                        if (!res.ok) {
+                            console.log(res.status);
+                        }
+                        return res.json();
+                    })
+                    .catch((err) => {
+                        alert('Server is busy now. Please try again later.');
+                        console.log(err);
+                    })
+                    .then((json) => {
+                        this.allData = json;
+                        console.log(this.allData)
+                        for (let index in this.allData) {
+                            this.allCountryCommonName.push(this.allData[index].name.common);
+                            this.allFlagSVG.push(this.allData[index].flags.svg);
+                            this.allFlagPNG.push(this.allData[index].flags.png);
+                            this.allFlagAlt.push(this.allData[index].flags.alt);
+
+                            // 有的國家是多首都，有的國家甚至沒有定義首都所以是undefined，因此不特別指定 capital index
+                            this.allCapitalName.push(this.allData[index].capital);
+
+                            // 有的國家多幣種，且資料有包含南極洲(沒有幣種 undefined，且南極主權在資料裡有多國主張)，加之currencies屬性裡面又嵌套了物件(key-value pair)，而key是幣種縮寫，故無法使用 currencies index 來指定資料中先列出的幣種，亦不需如此處理(因為有國家多幣種)
+                            this.allCurrency.push(this.allData[index].currencies);
+
+                            this.allCenterLatLng.push(this.allData[index].latlng);
+                        }
+
+                        //[lat, lng]
+                        let initCenter = [0, 0];
+                        // step = 1; 使用小數點等同整數位無條件進位
+                        let initZoom = 2;
+                        var map = L.map('map').setView(initCenter, initZoom);
+
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+
+
+                        console.log(this.allCurrency)
+
+                        for (let index in this.allData) {
+                            // 修正有瑕疵的資料(缺漏或undefined，不含錯誤資料)
+                            if (this.allCapitalName[index] === undefined) {
+                                this.allCapitalName[index] = 'unknown';
+                            }
+                            // 有的國家完全沒有幣種資料
+                            if (this.allCurrency[index] === undefined) {
+                                this.allCurrency[index] = {
+                                    unknown: {
+                                        name: 'unknown',
+                                        symbol: 'unknown'
+                                    }
+                                };
+                            }
+
+
+                            // 有的國家多幣種，但原始資料的貨幣資訊不是array，是key-value pair，但每個國家的貨幣key又不同，因而用array來方便處理
+                            let moneyShort = [];
+                            let moneyName = [];
+                            let moneySymbol = [];
+                            for (let key in this.allCurrency[index]) {
+                                // console.log(index + this.allCurrency[index][key].symbol)
+
+                                // 先修正幣種瑕疵，此處為有幣種資料但不完全，缺name或缺symbol (範例: 國家順序index = 13 蘇丹; index = 176 波士尼亞與赫塞哥維納)
+                                if (this.allCurrency[index][key].name === undefined) {
+                                    this.allCurrency[index][key].name = 'unknown';
+                                }
+                                if (this.allCurrency[index][key].symbol === undefined) {
+                                    this.allCurrency[index][key].symbol = 'unknown';
+                                }
+                                // 再繼續處理一國多幣的問題
+                                moneyShort.push(key);
+                                moneyName.push(this.allCurrency[index][key].name);
+                                moneySymbol.push(this.allCurrency[index][key].symbol);
+
+
+                                // console.log(index + key)
+                                // console.log(this.allCurrency[index])
+                                // console.log(index + this.allCurrency[index][key].symbol)
+                                // console.log(this.allCurrency[index][key].symbol)
+                            }
+                            // console.log(index + moneySymbol)
+
+
+
+                            let popupInfo =
+                                // 國旗
+                                '<div>' + this.markTitle.flag + '</div>' +
+                                '<div> <img src="' + this.allFlagSVG[index] + '" onerror="' + this.allFlagPNG[index] + '" alt="' + this.allFlagAlt[index] + '" width="100%"> </div>' +
+
+                                // 國名
+                                '<div>' + this.markTitle.countryName + this.allCountryCommonName[index] + '</div>' +
+
+                                // 首都名
+                                // 多首都檢查範例:南非(81)、巴勒斯坦(195)；無首都:南極洲(194)
+                                '<div>' + this.markTitle.capitalName + this.allCapitalName[index] + '</div>' +
+
+                                // 幣種
+                                // 多幣種檢查範例:汶萊(44)、柬埔寨(109)；無幣種:南極洲(194)
+                                '<ul>' + this.markTitle.currency +
+                                '<li>' + this.markTitle.currencyISOcode + moneyShort + '</li>' +
+                                '<li>' + this.markTitle.currencyName + moneyName + '</li>' +
+                                '<li>' + this.markTitle.currencySymbol + moneySymbol + '</li>' +
+                                '</ul>';
+
+                            L.marker(this.allCenterLatLng[index]).addTo(map)
+                                .bindPopup(popupInfo, {
+                                    // 每個國家國旗長寬比不一，故不設定高度；且原圖檔尺寸也不一，故將寬度寫死
+                                    maxWidth: 200,
+                                    minWidth: 200,
+                                    className: 'custom-popup',
+                                })
+                        }
+                        // console.log(moneyShort)
+
+                    })
+
+
+                // 可能有錯誤的地圖:
+                // 1. 國家順序index=159，布威島。套件資料提供的google map url(https://goo.gl/maps/7WRQAEKZb4uK36yi9) OSM url(https://www.openstreetmap.org/way/174996681)顯示位置和經緯度[54.4208, 3.3464]不符
+                // 2. 國家順序index=218，赫德島及麥唐納群島。套件資料提供的google map url(https://goo.gl/maps/k5FBAiVaVyozuYeA7) OSM url(https://www.openstreetmap.org/relation/2177227)顯示位置和經緯度[53.0818, 73.5042]不符
+            },
+        }).mount('#wrap')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+Staff System: Rooms List
+{% endblock %}
+
+{% block main %}
+<div class="container-md my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Rooms List</h2>
+    <div class="mb-2 clearfix">
+        <a href="/new_room" class="btn btn-warning float-end">Add New Room</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center align-middle">ID</th>
+                    <th class="text-center align-middle">Name</th>
+                    <th class="text-center align-middle">Location</th>
+                    <th class="text-center align-middle">Capacity</th>
+                    <th class="text-center align-middle">Price ($NTD / hr)</th>
+                    <th class="text-center align-middle">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <td class="text-center align-middle">{{ room.id }}</td>
+                    <td class="text-center align-middle">{{ room.name }}</td>
+                    <td class="text-center align-middle">{{ room.location }}</td>
+                    <td class="text-center align-middle">{{ room.capacity }}</td>
+                    <td class="text-center align-middle">{{ room.price }}</td>
+                    <td class="text-center align-middle">
+                        <a href="{{ url_for('delete_rooms', id=room.id) }}" class="btn btn-outline-secondary my-1"><i
+                                class="fa-solid fa-trash-can"></i></a>
+                        <a href="{{ url_for('server_rooms', id=room.id) }}" class="btn btn-outline-secondary my-1"><i
+                                class="fa-solid fa-pen-to-square"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

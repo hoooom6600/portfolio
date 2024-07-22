@@ -1,0 +1,45 @@
+.light-switch .btn {
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+}
+
+.main .table td {
+    width: 100px;
+    height: 100px;
+}
+
+.main td.available {
+    cursor: pointer;
+}
+
+.pss-modal .modal-body i {
+    font-size: 70px;
+    pointer-events: none;
+}
+
+.pss-modal .modal-body button {
+    width: 100px;
+    height: 100px;
+}
+
+#resultModal .modal-footer .btn-group {
+    width: 100%;
+}
+
+#resultModal .modal-footer .btn-group .btn,
+#resultModal .modal-footer .btn {
+    width: 200px;
+    max-width: 50%;
+}
+
+#modeSwitch.btn-group .btn {
+    width: 150px;
+}
+
+@media screen and (min-width: 992px) {
+    .main .table td {
+        width: 150px;
+        height: 150px;
+    }
+}

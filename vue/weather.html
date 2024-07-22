@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 系列八：第6課 ── 天氣查詢應用程式(無載入閃爍)</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #main {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #main.day {
+            background-color: #51c5fc;
+            color: #333;
+        }
+
+        #main.night {
+            background-color: #241f2b;
+            color: #fff;
+        }
+
+        .control,
+        .info {
+            width: 100%;
+            max-width: 900px;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .control {
+            border-radius: 10px;
+            /* 定位和圖層是給天體用的，不要讓天體蓋到面板 */
+            position: relative;
+            z-index: 1;
+        }
+
+        .control.active {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .info {
+            border-radius: 0 0 10px 10px;
+            /* 定位和圖層是給天體用的，不要讓天體蓋到面板 */
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            line-height: 2;
+        }
+
+        select {
+            width: 100%;
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        option {
+            text-align: center;
+        }
+
+        .info .weather {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .info .weather p {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+        }
+
+        .info .weather .border {
+            width: 1px;
+            height: 100px;
+        }
+
+        .info .weather .border.day {
+            background-color: #333;
+        }
+
+        .info .weather .border.night {
+            background-color: #fff;
+        }
+
+        .data-title {
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 2;
+        }
+
+        .data-detail {
+            font-size: 20px;
+            line-height: 2;
+        }
+
+        /* 天體 */
+        .sky.day .sun {
+            /* display: none; */
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #ffee00;
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            box-shadow: 0px 0px 150px #ffee00;
+            filter: blur(5px);
+        }
+
+        .sky.day .sun::before {
+            position: absolute;
+            content: '';
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: transparent;
+            animation: .5s sunshine linear infinite alternate;
+        }
+
+        .sky.night .moon {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: #ffee00;
+            position: absolute;
+            top: 10%;
+            right: 20%;
+            animation: .5s moonRotate linear infinite alternate;
+        }
+
+        .sky.night .moon::before {
+            position: absolute;
+            content: '';
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            transform: translateX(-27%) translateY(-30%);
+            background-color: #241f2b;
+
+        }
+
+        @keyframes moonRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(10deg);
+            }
+        }
+
+        @keyframes sunshine {
+            0% {
+                box-shadow: 0px 0px 10px #ffee00;
+            }
+
+            100% {
+                box-shadow: 0px 0px 50px #ffee00;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <h1 style="text-align: center; height: 0; color: #666; position: relative; z-index: 1;">JavaScript 系列八：第6課 ──
+        天氣查詢應用程式(無載入閃爍)</h1>
+
+    <div id="wrap">
+        <div id="main" :class="{day: light, night: !light}">
+            <div class="sky" :class="{day: light, night: !light}">
+                <!-- day -->
+                <div class="sun" v-if="light"></div>
+
+                <!-- night -->
+                <div class="moon" v-if="!light"></div>
+            </div>
+            <div class="control" :class="{active: isActive}">
+                <h2>台灣各縣市現在天氣查詢</h2>
+                <select name="" id="" required v-model="selectedLocation">
+                    <option value="" disabled selected>請選擇地區</option>
+                    <!-- 也是可以用CWA的地區列表，但是因為不是平常會見到的排序，所以還是用自己列的順序(locationsZh) -->
+                    <!-- 因為value盡量不要使用CJK，所以還是自己列(locationsEn)，但中英文對照順序務必注意 -->
+                    <option v-for="(location, index) in locationsZh" :value="locationsEn[index]">{{ location }}</option>
+                </select>
+            </div>
+            <div class="info" v-if="currentLocation && isActive">
+                <div class="weather">
+                    <p><span class="data-title">天氣現象</span><span class="data-detail">{{
+                            currentLocation.weatherElement[0].time[0].parameter.parameterName
+                            }}</span></p>
+                    <div class="border" :class="{day: light, night: !light}"></div>
+                    <p><span class="data-title">最高溫度</span><span class="data-detail">{{
+                            currentLocation.weatherElement[4].time[0].parameter.parameterName + ' °' +
+                            currentLocation.weatherElement[4].time[0].parameter.parameterUnit
+                            }}</span></p>
+                    <div class="border" :class="{day: light, night: !light}"></div>
+                    <p><span class="data-title">最低溫度</span><span class="data-detail">{{
+                            currentLocation.weatherElement[2].time[0].parameter.parameterName + ' °' +
+                            currentLocation.weatherElement[2].time[0].parameter.parameterUnit
+                            }}</span></p>
+                    <div class="border" :class="{day: light, night: !light}"></div>
+                    <p><span class="data-title">降雨機率</span><span class="data-detail">{{
+                            currentLocation.weatherElement[1].time[0].parameter.parameterName + ' '
+
+                            <!-- currentLocation.weatherElement[1].time[0].parameter.parameterUnit (百分比) -->
+                            +'%'
+                            }}</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                // 初次載入頁面的時間，
+                let loadingHour = new Date().getHours();
+                return {
+                    locationsZh: [
+                        '基隆市',
+                        '臺北市',
+                        '新北市',
+                        '宜蘭縣',
+                        '桃園市',
+                        '新竹市',
+                        '新竹縣',
+                        '苗栗縣',
+                        '臺中市',
+                        '彰化縣',
+                        '南投縣',
+                        '雲林縣',
+                        '嘉義市',
+                        '嘉義縣',
+                        '臺南市',
+                        '高雄市',
+                        '屏東縣',
+                        '花蓮縣',
+                        '臺東縣',
+                        '澎湖縣',
+                        '金門縣',
+                        '連江縣',
+                    ],
+                    locationsEn: [
+                        'KLU',
+                        'TPE',
+                        'TPH',
+                        'ILN',
+                        'TYC',
+                        'HSC',
+                        'HSH',
+                        'MAL',
+                        'TXG',
+                        'CWH',
+                        'NTO',
+                        'YLH',
+                        'CYI',
+                        'CHY',
+                        'TNN',
+                        'KHH',
+                        'IUH',
+                        'HWA',
+                        'TTT',
+                        'PEH',
+                        'KMN',
+                        'MZW',],
+                    selectedLocation: '',
+                    CWA: null,
+                    currentLocation: null,
+                    // 初始為null，在:class綁定仍會被判定為false而變成夜間背景。如果早上使用此工具，仍會在載入頁面時有非常迅速的背景切換。
+                    // light: null,
+                    light: loadingHour >= 6 && loadingHour < 18 ? true : false,
+                    isActive: false,
+                }
+            },
+            watch: {
+                selectedLocation(newValue, oldValue) {
+                    this.selectedLocation = newValue;
+                    // 不想用 button @click 來監聽事件，所以每當改變 select 選擇，就調用函式
+                    this.correspondData();
+                    this.isActive = true;
+                }
+            },
+            methods: {
+                correspondData() {
+                    for (let indexEn in this.locationsEn) {
+                        if (this.locationsEn[indexEn] === this.selectedLocation) {
+                            for (let indexCWA in this.CWA) {
+                                if (this.CWA[indexCWA].locationName === this.locationsZh[indexEn]) {
+                                    this.currentLocation = this.CWA[indexCWA];
+
+                                    // console.log(this.CWA[indexCWA].weatherElement[0].time[0].parameter.parameterName)
+                                    // console.log(this.currentLocation.weatherElement[0].time[0].parameter.parameterName)
+                                    // console.log(this.currentLocation)
+
+                                }
+                            }
+                        }
+                    }
+                },
+                updateBackground() {
+                    let date = new Date();
+                    let hour = date.getHours();
+
+                    console.log(date);
+                    console.log('現在「時」為 ' + hour + ' 點鐘')
+
+                    // 18:00就要切換成夜間模式。
+                    this.light = hour >= 6 && hour < 18 ? true : false;
+                    console.log(this.light === true ? 'this.light 應為 日間模式' : 'this.light 應為 夜間模式')
+                }
+            },
+            mounted() {
+                fetch('API KEY', { method: 'GET' })
+                    .then((res) => {
+                        console.log(res.ok);
+                        if (!res.ok) {
+                            console.log(res.status);
+                        }
+                        return res.json();
+                    })
+                    .then((json) => {
+                        this.CWA = json.records.location;
+                        // console.log(this.CWA);
+
+                        // 檢查data()的light結果
+                        console.log('data()的light結果: ' + this.light)
+
+                        // 日夜立即切換檢查改這裡，並把setInterval註解掉
+                        // this.light = true;
+
+                        // 之後每秒檢查一次現在時間，用以切換日夜背景
+                        setInterval(this.updateBackground, 1000)
+                    })
+                    .catch((error) => {
+                        alert('請稍後再試。若您是在公開網頁（如：CodePen、GitHub）瀏覽，為確保API KEY隱私性，而不提供正確的fetch')
+                        console.log(error);
+                    })
+
+            }
+        }).mount('#wrap')
+
+
+    </script>
+</body>
+
+</html>

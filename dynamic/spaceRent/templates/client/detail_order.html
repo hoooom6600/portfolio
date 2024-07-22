@@ -1,0 +1,235 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+Detail History Order
+{% endblock %}
+
+{% block main %}
+<div class="container py-3">
+    <div class="row mb-3">
+        <div class="col-12 col-md-6">
+            <img src="{{ space.img }}" class="img-fluid w-100" alt="">
+        </div>
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-between align-items-start">
+            <p class="mb-0 fs-5">{{ space.name }}</p>
+            <p class="mb-0 fs-5">{{ space.location }}要改成地址</p>
+            <p class="mb-0 fs-5">
+                <i class="fa-solid fa-user align-middle"></i>
+                <span class="align-middle">{{ space.capacity }}</span>
+            </p>
+            <p class="mb-0 fs-5">$ {{ space.price }} / hr</p>
+        </div>
+    </div>
+
+    {% if order.status == 'Canceled' %}
+    <div class="row">
+        <input type="hidden" id="id" name="id" value="{{ order.id }}" required>
+        <div class="mb-3 col-12 col-md-4">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ order.name }}" readonly required>
+        </div>
+        <div class="mb-3 col-12 col-md-4">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ order.email }}" readonly
+                required>
+        </div>
+        <div class="mb-3 col-12 col-md-4">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phone" value="{{ order.phone }}" readonly required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col-12 col-md-6">
+            <label for="start" class="form-label">Start (UTC+8)</label>
+            <input type="datetime-local" class="form-control" id="dateStart" name="start" value="{{ order.start }}"
+                readonly required>
+        </div>
+        <div class="mb-3 col-12 col-md-6">
+            <label for="end" class="form-label">End (UTC+8)</label>
+            <input type="datetime-local" class="form-control" id="dateEnd" name="end" value="{{ order.end }}" readonly
+                required>
+        </div>
+    </div>
+    <div class="mb-3 col-12">
+        <label for="total" class="form-label">Total (NTD)</label>
+        <input type="text" class="form-control" id="total" name="total" value="{{ order.total }}" readonly required>
+        <p class="form-text">Less than one hour will be charged in one-hour units.</p>
+    </div>
+    <div class="mb-3 col-12">
+        <label for="note" class="form-label">Note</label>
+        <textarea type="text" class="form-control" id="note" name="note" rows="5" value="{{ order.note }}"
+            readonly></textarea>
+    </div>
+    <div class="mb-3 mb-md-5 text-center col-12">
+        <p class="text-danger fs-3">The order has been canceled.</p>
+    </div>
+
+    {% elif before48 %}
+    <form action="/cancel" method="post">
+        <div class="row">
+            <input type="hidden" id="id" name="id" value="{{ order.id }}" required>
+            <div class="mb-3 col-12 col-md-4">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ order.name }}" readonly
+                    required>
+            </div>
+            <div class="mb-3 col-12 col-md-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ order.email }}" readonly
+                    required>
+            </div>
+            <div class="mb-3 col-12 col-md-4">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" value="{{ order.phone }}" readonly
+                    required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label for="start" class="form-label">Start (UTC+8)</label>
+                <input type="datetime-local" class="form-control" id="dateStart" name="start" value="{{ order.start }}"
+                    readonly required>
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label for="end" class="form-label">End (UTC+8)</label>
+                <input type="datetime-local" class="form-control" id="dateEnd" name="end" value="{{ order.end }}"
+                    readonly required>
+            </div>
+        </div>
+        <div class="mb-3 col-12">
+            <label for="total" class="form-label">Total (NTD)</label>
+            <input type="text" class="form-control" id="total" name="total" value="{{ order.total }}" readonly required>
+            <p class="form-text">Less than one hour will be charged in one-hour units.</p>
+        </div>
+        <div class="mb-3 col-12">
+            <label for="note" class="form-label">Note</label>
+            <textarea type="text" class="form-control" id="note" name="note" rows="5" value="{{ order.note }}"
+                readonly></textarea>
+        </div>
+        <div class="text-center col-12">
+            <p class="form-text">It can only be canceled before the order start time and before it over 48 hours.</p>
+        </div>
+        <div class="mb-3 form-check d-flex justify-content-center align-items-center col-12">
+            <input type="checkbox" class="form-check-input border-primary me-5" id="agree" name="agree" required>
+            <label class="form-check-label" for="agree"><span class="text-danger me-1">*</span>I agree the order once be
+                canceled, the action cannot be recovered.
+            </label>
+        </div>
+        <div class="mb-3 mb-md-5 text-center col-12">
+            <button type="submit" class="btn btn-outline-danger p-2 w-75">Cancel the order</button>
+        </div>
+    </form>
+    {% else %}
+    <div class="row">
+        <input type="hidden" id="id" name="id" value="{{ order.id }}" required>
+        <div class="mb-3 col-12 col-md-4">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ order.name }}" readonly required>
+        </div>
+        <div class="mb-3 col-12 col-md-4">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ order.email }}" readonly
+                required>
+        </div>
+        <div class="mb-3 col-12 col-md-4">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phone" value="{{ order.phone }}" readonly required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col-12 col-md-6">
+            <label for="start" class="form-label">Start (UTC+8)</label>
+            <input type="datetime-local" class="form-control" id="dateStart" name="start" value="{{ order.start }}"
+                readonly required>
+        </div>
+        <div class="mb-3 col-12 col-md-6">
+            <label for="end" class="form-label">End (UTC+8)</label>
+            <input type="datetime-local" class="form-control" id="dateEnd" name="end" value="{{ order.end }}" readonly
+                required>
+        </div>
+    </div>
+    <div class="mb-3 col-12">
+        <label for="total" class="form-label">Total (NTD)</label>
+        <input type="text" class="form-control" id="total" name="total" value="{{ order.total }}" readonly required>
+        <p class="form-text">Less than one hour will be charged in one-hour units.</p>
+    </div>
+    <div class="mb-3 col-12">
+        <label for="note" class="form-label">Note</label>
+        <textarea type="text" class="form-control" id="note" name="note" rows="5" value="{{ order.note }}"
+            readonly></textarea>
+    </div>
+    <div class="mb-3 mb-md-5 text-center col-12">
+        <p class="form-text">Sorry, you cannot cancel the order because the time is not before the order start time
+            and before it over 48 hours.</p>
+        <button type="submit" class="btn btn-outline-danger p-2 w-75" disabled>Cancel the order</button>
+    </div>
+    {% endif %}
+
+
+    {% if not order.status == 'Canceled' %}
+    <hr class="my-0">
+
+    <h2 class="section-title text-center py-3 py-md-5">Comment</h2>
+    {% if finished %}
+    {% if commented %}
+    <p class="text-center form-text">The comment cannot be changed once it is submitted.</p>
+    {% endif %}
+    {% if not_checked %}
+    <p class="text-danger text-center">Please text something and check the checkbox before submit the form.</p>
+    {% endif %}
+    <div class="row">
+        {% if not commented %}
+        <form action="/comment" method="post">
+            <input type="hidden" name="id" value="{{ order.id }}">
+            <div class="form-floating mb-3 col-12">
+                <textarea type="email" class="form-control" id="floatingcomment" name="comment" placeholder="Comment"
+                    style="height: 200px;" required></textarea>
+                <label for="floatingcomment">Comment</label>
+            </div>
+            <div class="mb-3 form-check d-flex justify-content-center align-items-center col-12">
+                <input type="checkbox" class="form-check-input border-primary me-5" id="agree" name="agree" required>
+                <label class="form-check-label" for="agree"><span class="text-danger me-1">*</span>I agree the comment
+                    cannot be changed once it is submitted, and only share the space experience. No hate, racist,
+                    personal attack, pornographic, spam remark is allowed.
+                </label>
+            </div>
+
+            <div class="mb-3 text-center col-12">
+                <button type="submit" class="btn btn-primary p-2 w-75">Submit</button>
+            </div>
+        </form>
+        {% else %}
+        <form>
+            <div class="form-floating mb-3 col-12">
+                <textarea type="email" class="form-control" id="floatingcomment" name="comment" placeholder="Comment"
+                    style="height: 200px;" readonly>
+                    {{ order.comment }}
+                </textarea>
+                <label for="floatingcomment">Comment</label>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+    {% else %}
+    <p class="form-text text-center">You can leave a comment after the order end time.</p>
+    <div class="form-floating mb-3 col-12">
+        <textarea type="email" class="form-control" id="floatingcomment" name="comment" placeholder="Comment"
+            style="height: 200px;" required disabled></textarea>
+        <label for="floatingcomment">Comment</label>
+    </div>
+    <div class="mb-3 form-check d-flex justify-content-center align-items-center col-12">
+        <input type="checkbox" class="form-check-input border-primary me-5" id="agree" name="agree" required disabled>
+        <label class="form-check-label" for="agree"><span class="text-danger me-1">*</span>I agree the comment cannot be
+            changed once it is submitted, and only share the space experience. No hate, racist, personal attack,
+            pornographic, spam remark is allowed.
+        </label>
+    </div>
+
+    <div class="mb-3 text-center col-12">
+        <button type="submit" class="btn btn-primary p-2 w-75" disabled>Submit</button>
+    </div>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}

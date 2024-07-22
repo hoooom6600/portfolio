@@ -1,0 +1,163 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+Order: {{ info.name }}
+{% endblock %}
+
+{% block main %}
+<div class="container py-3">
+    <div class="row mb-3">
+        <div class="col-12 col-md-6">
+            <img src="{{ info.img }}" class="img-fluid w-100" alt="">
+        </div>
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-between align-items-start">
+            <p class="mb-0 fs-5">{{ info.name }}</p>
+            <p class="mb-0 fs-5">{{ info.location }}要改成地址</p>
+            <p class="mb-0 fs-5">
+                <i class="fa-solid fa-user align-middle"></i>
+                <span class="align-middle">{{ info.capacity }}</span>
+            </p>
+            <p class="mb-0 fs-5">$NTD <span id="price">{{ info.price }}</span> / hr</p>
+        </div>
+    </div>
+
+    {% if overlap %}
+    <p class="text-center text-danger my-3 fs-4">Sorry. The space has been occupied in the time you choose.</p>
+    {% endif %}
+    {% if order_fail %}
+    <p class="text-center text-danger my-3 fs-4">Please check all information is valid and if the date and time are
+        after now.</p>
+    {% endif %}
+
+    <form action="/order" method="post">
+        <div class="row">
+            <input type="hidden" id="room" name="room" value="{{ info.name }}" required>
+
+            <div class="mb-3 col-12 col-md-4">
+                <label for="name" class="form-label"><span class="text-danger me-1">*</span>Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ request.form.name }}" required>
+            </div>
+            <div class="mb-3 col-12 col-md-4">
+                <label for="email" class="form-label"><span class="text-danger me-1">*</span>Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ request.form.email }}"
+                    required>
+            </div>
+            <div class="mb-3 col-12 col-md-4">
+                <label for="phone" class="form-label"><span class="text-danger me-1">*</span>Phone</label>
+                <input type="tel" class="form-control" id="phone" name="phone" value="{{ request.form.phone }}"
+                    required>
+            </div>
+        </div>
+        <div class="row">
+            {% if form %}
+            <div class="mb-3 mb-md-0 col-12 col-md-6">
+                <label for="start" class="form-label"><span class="text-danger me-1">*</span>Start</label>
+                <input type="datetime-local" class="form-control" id="dateStart" name="start"
+                    value="{{ request.form.start }}" required>
+            </div>
+            <div class="mb-3 mb-md-0 col-12 col-md-6">
+                <label for="end" class="form-label"><span class="text-danger me-1">*</span>End</label>
+                <input type="datetime-local" class="form-control" id="dateEnd" name="end" value="{{ request.form.end }}"
+                    required>
+            </div>
+            {% else %}
+            <div class="mb-3 mb-md-0 col-12 col-md-6">
+                <label for="start" class="form-label"><span class="text-danger me-1">*</span>Start</label>
+                <input type="datetime-local" class="form-control" id="dateStart" name="start" value="{{ start }}"
+                    required>
+            </div>
+            <div class="mb-0 col-12 col-md-6">
+                <label for="end" class="form-label"><span class="text-danger me-1">*</span>End</label>
+                <input type="datetime-local" class="form-control" id="dateEnd" name="end" value="{{ end }}" required>
+            </div>
+            {% endif %}
+            <input type="hidden" id="lag" name="lag" value="">
+            <p class="form-text">
+                Please choose time in your local time zone.
+                <br>
+                We'll convert them into UTC+8 format to show the result in
+                history order page.
+            </p>
+        </div>
+        <div class="mb-3 col-12">
+            <label for="total" class="form-label">Total (NTD)</label>
+            <input type="text" class="form-control" id="total" name="total" readonly required>
+            <p class="form-text">Less than one hour will be charged in one-hour units.</p>
+        </div>
+        <!-- <div class="mb-3 col-12">
+            <label for="card" class="form-label"><span class="text-danger me-1">*</span>Card Number</label>
+            <input type="password" class="form-control" id="card" name="card" value="{{ request.form.card }}" required>
+        </div> -->
+        <div class="mb-3 col-12">
+            <label for="note" class="form-label">Note</label>
+            <textarea type="text" class="form-control" id="note" name="note" rows="5" value="{{ request.form.note }}"
+                placeholder="Text here... (optional)"></textarea>
+        </div>
+
+
+
+        <div class="mb-3 form-check d-flex justify-content-center align-items-center col-12">
+            <input type="checkbox" class="form-check-input border-primary me-5" id="agree" name="agree">
+            <label class="form-check-label" for="agree"><span class="text-danger me-1">*</span>I agree the
+                <button type="button" class="text-decoration-underline text-primary border-0 bg-body"
+                    data-bs-toggle="modal" data-bs-target="#rentalTermsModal">rental
+                    terms</button>
+                .</label>
+
+        </div>
+        <div class="mb-3 text-center col-12">
+            <button type="submit" class="btn btn-primary p-2 w-75">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="rentalTermsModal" tabindex="-1" aria-labelledby="rentalTermsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="rentalTermsModalLabel">Rental Terms</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>
+                        <p class="text-danger">
+                            For the customers' rights and orders' safety, we never change customers' rental time. We
+                            only modify the contact information in the order if the customer contacts the service
+                            department to help.
+                            <br>
+                            If you need to change the rental time, please delete the order by yourself and make a new
+                            order.
+                            <br>
+                            But if the rental start time is not before now over 48 hours, the order cannot be canceled
+                            in any condition.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Please keep the environment clean.<br>
+                            Violators will be charged a cleaning fee of $100.</p>
+                    </li>
+                    <li>
+                        <p>Smoking and cooking are not allowed.</p>
+                    </li>
+                    <li>
+                        <p>Illegal activities are not allowed.</p>
+                    </li>
+                    <li>
+                        <p>This place is not for accommodation.</p>
+                    </li>
+                    <li>
+                        <p>Please record the venue restoration images before leaving.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/total.js"></script>
+{% endblock %}

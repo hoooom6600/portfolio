@@ -1,0 +1,293 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+Index
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid g-0">
+    <div class="banner position-relative">
+        <div class="banner-img"></div>
+        <div class="container text-center position-absolute start-50 top-50 translate-middle">
+            <h1>目前有設定server time zone 為 UTC+7，設置在date.js</h1>
+            <h1>後台加上篩選器與分頁數</h1>
+            <h3>Every door, every smile.</h3>
+            <p>We provide the best
+                experience for your memories.</p>
+            <form action="/search" method="get" class="my-2 mx-auto w-75">
+                <div class="input-group">
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="floatingSelect" name="place"
+                            aria-label="Floating label select example">
+                            <option selected disabled value="">Choose a place</option>
+                            {% for place in places %}
+                            <option value="{{ place }}">{{ place }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="floatingSelect">Place</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="datetime-local" class="form-control" id="dateStart" name="start"
+                            placeholder="Date Start" min="" max="" step="1800" required>
+                        <label for="date">Start Date</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="datetime-local" class="form-control" id="dateEnd" name="end" placeholder="Date End"
+                            min="" max="" step="1800" required>
+                        <label for="date">End Date</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="headcount" name="headcount"
+                            placeholder="Headcount" min="1" step="1" required>
+                        <label for="headcount">Headcount</label>
+                    </div>
+                    <input type="hidden" id="lag" name="lag" value="">
+                </div>
+                <button type="submit" class="btn btn-success w-50"><i class="fa-solid fa-magnifying-glass"></i>
+                    Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="news container py-5">
+    <h2 class="section-title text-center mb-5">News</h2>
+    <div class="row">
+        {% for new in news %}
+        <a href="{{ url_for('news', id=new.id) }}" class="item col-12 col-md-4 link-underline link-underline-opacity-0">
+            <div class="img w-75">
+                <img src="{{ new.cover }}" class="img-fluid" alt="">
+            </div>
+            <div class="info bg-secondary-subtle w-75 ms-auto position-relative">
+                <div class="title pt-2">
+                    <p class="text-dark ms-2 text-truncate">{{ new.title }}</p>
+                </div>
+                <div class="date pb-2">
+                    <p class="text-dark ms-2 mb-0">{{ new.date }}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="text-center col-12 mt-5">
+        <a href="/news"><button class="btn btn-outline-dark">READ MORE</button></a>
+    </div>
+</div>
+<div class="events container py-5">
+    <h2 class="section-title text-center mb-5">Events</h2>
+    <div class="row">
+        {% for event in events %}
+        <a href="{{ url_for('events', id=event.id) }}"
+            class="item col-12 col-md-6 link-underline link-underline-opacity-0 position-relative">
+            <div
+                class="square-background position-absolute d-flex flex-column justify-content-center align-items-center z-1 m-0">
+            </div>
+            <p
+                class="square-content position-absolute d-flex flex-column justify-content-center align-items-center z-1 m-0">
+                <span class="text-dark">{{ event.month }}</span>
+                <span class="text-dark">{{ event.day }}</span>
+            </p>
+
+            <img src="{{ event.cover }}" class="img-fluid position-relative" alt="">
+        </a>
+        {% endfor %}
+    </div>
+    <div class="text-center col-12 mt-5">
+        <a href="/events"><button class="btn btn-outline-dark">READ MORE</button></a>
+    </div>
+</div>
+<div class="services container-fluid bg-secondary-subtle py-5">
+    <h2 class="section-title text-center mb-5">Services</h2>
+    <div class="row justify-content-center mb-md-5">
+        <div class="item col-12 col-md-4 text-center">
+            <i class="fa-solid fa-book mb-5"></i>
+            <div class="txt">
+                <h5>Books</h5>
+                <p>Please register as a member before borrowing books.</p>
+                <p>A fee of $3 is required for registration.</p>
+            </div>
+        </div>
+        <div class="item col-12 col-md-4 text-center mt-5 mt-md-0">
+            <i class="fa-solid fa-utensils mb-5"></i>
+            <div class="txt">
+                <h5>Cuisine</h5>
+                <p>The latest time to order is 8 PM.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="item col-12 col-md-3 text-center mt-5 mt-md-0">
+            <i class="fa-solid fa-bolt mb-5"></i>
+            <div class="txt">
+                <h5>Charging Device</h5>
+            </div>
+        </div>
+        <div class="item col-12 col-md-3 text-center mt-5 mt-md-0">
+            <i class="fa-solid fa-display mb-5"></i>
+            <div class="txt">
+                <h5>Projector</h5>
+            </div>
+        </div>
+        <div class="item col-12 col-md-3 text-center mt-5 mt-md-0">
+            <i class="fa-solid fa-wifi mb-5"></i>
+            <div class="txt">
+                <h5>Wi-Fi</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="gallery container py-5">
+    <h2 class="section-title text-center mb-5">Gallery</h2>
+    <div class="imgs">
+        <img src="/static/02.jpg" alt="">
+        <img src="/static/03.jpg" alt="">
+        <img src="/static/04.jpg" alt="">
+        <img src="/static/05.jpg" alt="">
+    </div>
+</div>
+<div class="about container-fluid bg-secondary-subtle py-5">
+    <h2 class="section-title text-center mb-5">About</h2>
+    <div class="row">
+        <div class="item col-12 col-md-4 text-center">
+            <div class="rounded-circle bg-body-secondary d-flex align-items-center justify-content-center mb-4 mx-auto">
+                <i class="fa-solid fa-drumstick-bite"></i>
+            </div>
+            <div class="txt">
+                <h5>Outside food and drink
+                    OK</h5>
+                <p>If you visit with food or drink, a surcharge will be made.</p>
+            </div>
+        </div>
+        <div class="item col-12 col-md-4 text-center mt-5 mt-md-0">
+            <div class="rounded-circle bg-body-secondary d-flex align-items-center justify-content-center mb-4 mx-auto">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="txt">
+                <h5>Reservation REQUIRED</h5>
+                <p>Please make a reservation before at least 7 days while visiting.</p>
+            </div>
+        </div>
+        <div class="item col-12 col-md-4 text-center mt-5 mt-md-0">
+            <div class="rounded-circle bg-body-secondary d-flex align-items-center justify-content-center mb-4 mx-auto">
+                <i class="fa-solid fa-paw"></i>
+            </div>
+            <div class="txt">
+                <h5>Pet-Friendly</h5>
+                <p>Pets must be kept on a leash in order to avoid disturbing others.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contact container py-5">
+    <h2 class="section-title text-center mb-5">Contact</h2>
+    <div class="medias text-center">
+        <a href="#" class="d-inline-block link-underline link-underline-opacity-0 text-dark rounded-circle mx-5 p-1"><i
+                class="fa-brands fa-facebook"></i></a>
+        <a href="#" class="d-inline-block link-underline link-underline-opacity-0 text-dark rounded-circle mx-5 p-1"><i
+                class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="d-inline-block link-underline link-underline-opacity-0 text-dark rounded-circle mx-5 p-1"><i
+                class="fa-brands fa-youtube"></i></a>
+    </div>
+    <div class="traditional-contact mt-5">
+        <div class="email d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-envelope me-5"></i>
+            <span>aabbcc@mail.com</span>
+        </div>
+        <div class="telephone d-flex align-items-center justify-content-center mt-5">
+            <i class="fa-solid fa-phone me-5"></i>
+            <span>+1 840-123-4567</span>
+        </div>
+    </div>
+</div>
+<div class="faq container accordion py-5 " id="accordionPanelsStayOpenFAQ">
+    <h2 class="section-title text-center mb-5">FAQ</h2>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-secondary-subtle" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseOne">
+                <p class="mb-0">How can I check the availability of a venue?</p>
+                <p class="mb-0">我如何檢查場地的可用性？</p>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse collapsed">
+            <div class="accordion-body">
+                <p>
+                    You can check the availability of a venue by selecting the desired date and time on the venue page.
+                    If
+                    the venue is
+                    available, you will be able to proceed with the booking process.
+                </p>
+                <p class="mb-0">您可以通過在場地頁面上選擇所需的日期和時間來檢查場地的可用性。如果場地可用，您將能夠繼續進行預訂過程。</p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-secondary-subtle" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseTwo">
+                <p class="mb-0">What is the cancellation policy for venue bookings?</p>
+                <p class="mb-0">場地預訂的取消政策是什麼？</p>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <p>Our cancellation policy allows full refunds for cancellations made at least 48 hours before the
+                    booking date. Any
+                    cancellations made within 48 hours of the booking date will not be refunded.</p>
+                <p class="mb-0">我們的取消政策允許全額退款，前提是至少在預訂日期前48小時取消。預訂日期前48小時內進行的任何取消將不予退款。</p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-secondary-subtle" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseThree">
+                <p class="mb-0">Can I change my booking details after I have made a booking?</p>
+                <p class="mb-0">我可以在預訂後更改我的預訂詳情嗎？</p>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <p>Yes, you can change your booking details up to 24 hours before the booking date. Any changes made
+                    within 24 hours of the
+                    booking date may incur additional charges.</p>
+                <p class="mb-0">是的，您可以在預訂日期前24小時更改您的預訂詳情。預訂日期前24小時內進行的任何更改可能會產生額外的費用。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- cover CM modal -->
+<div class="cover-cm">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary d-none" id="cmModalOpenBtn" data-bs-toggle="modal"
+        data-bs-target="#cmModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cmModal" tabindex="-1" aria-labelledby="cmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered border-0">
+
+            <div class="modal-content border-0">
+                <div class="modal-header text-end border-0 p-0">
+                    <button type="button" class="btn-close btn-close-white mb-2" id="cmModalCloseBtn"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <a href="">
+                    <div class="modal-body border-0 p-0">
+                        <img src="https://picsum.photos/300/200?random=1" class="img-fluid w-100" alt="">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/coverCM.js"></script>
+<script src="/static/eventsImgMove.js"></script>
+{% endblock %}

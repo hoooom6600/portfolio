@@ -1,0 +1,82 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+SignUp
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <h2 class="section-title text-center py-3 py-md-5">Sign Up</h2>
+    {% if signup_fail %}
+    <p class="text-center text-danger fs-4">Please check if all information is valid.</p>
+    <p class="text-center text-danger fs-4">Confirmation should be the same as password.</p>
+    <p class="text-center text-danger fs-4">No space is accepted.</p>
+    {% endif %}
+
+    {% if signup_success %}
+    <p class="text-center text-success fs-4">Sign up success!</p>
+    {% endif %}
+
+    {% if repeat_username %}
+    <p class="text-center text-danger fs-4">The username has been occupied.</p>
+    <p class="text-center text-danger fs-4">Please change another one.</p>
+    {% endif %}
+    <form action="/signup" method="post" class="w-75 m-auto text-center">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingName" name="name" placeholder="Name" required>
+            <label for="floatingName"><span class="text-danger me-1">*</span>Name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatinfEmail" name="email" placeholder="Email" required>
+            <label for="floatingEmail"><span class="text-danger me-1">*</span>Email</label>
+
+        </div>
+        <div class="form-floating mb-3">
+            <input type="tel" class="form-control" id="floatinfPhone" name="phone" placeholder="Phone" required>
+            <label for="floatingPhone"><span class="text-danger me-1">*</span>Phone</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingAccount" name="username" placeholder="Account" required>
+            <label for="floatingAccount"><span class="text-danger me-1">*</span>Username</label>
+            <p class="form-text text-start m-1">Must be over 6 characters, and needs to include English
+                letters and numbers.</p>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password"
+                required>
+            <label for="floatingPassword"><span class="text-danger me-1">*</span>Password</label>
+            <p class="form-text text-start m-1">Must be over 8 characters, and needs to include English
+                letters and numbers.
+            </p>
+            <p class="form-text text-start m-1">The English letters must include at least one uppercase and
+                one lowercase.</p>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatingConfirmation" name="confirmation"
+                placeholder="Confirmation" required>
+            <label for="floatingConfirmation"><span class="text-danger me-1">*</span>Confirmation</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="hidden" id="lag" name="lag" value="">
+            <input type="date" class="form-control" id="floatingBirthday" name="birthday"
+                placeholder="Birthday (YYYY.MM.DD)" max="" required>
+            <label for="floatingBirthday"><span class="text-danger me-1">*</span>Birthday (YYYY.MM.DD)</label>
+            <p class="form-text text-start m-1">Only adults over 18 years old can apply.</p>
+        </div>
+        <div class="form-check mb-3 d-flex justify-content-center align-items-center">
+            <input class="form-check-input me-5 border-primary" type="checkbox" value="" id="agree" name="agree"
+                required>
+            <label class="form-check-label text-start">
+                <p class="mb-0">
+                    <span class="text-danger me-1">*</span>I agree to the <a href="#">Terms and Conditions
+                        of
+                        this service</a>.
+                </p>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Submit</button>
+    </form>
+</div>
+
+
+{% endblock %}

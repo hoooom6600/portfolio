@@ -1,0 +1,142 @@
+{% extends "/client/layout.html" %}
+
+{% block title %}
+Detail info: {{ space.name }}
+{% endblock %}
+
+{% block main %}
+<div class="container py-3">
+    <div class="row mb-3">
+        <div class="col-12 col-md-6">
+            <img src="{{ space.img }}" class="img-fluid w-100" alt="">
+        </div>
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-between align-items-start">
+            <p class="mb-0 fs-5">{{ space.name }}</p>
+            <p class="mb-0 fs-5">{{ space.location }}要改成地址</p>
+            <p class="mb-0 fs-5">
+                <i class="fa-solid fa-user align-middle"></i>
+                <span class="align-middle">{{ space.capacity }}</span>
+            </p>
+            <p class="mb-0 fs-5">$ {{ space.price }} / hr</p>
+        </div>
+    </div>
+    <div class="text-center my-5">
+        <h2 class="section-title mb-5">Services and equipment</h2>
+        <ul class="list-unstyled">
+            {% if nothing %}
+            <li class="fs-5 mb-3">Sorry. Nothing provided. :(</li>
+            {% else %}
+            {% for equipment in equipments %}
+            {% if equipment == 'None' %}
+            <!-- nothing to insert -->
+            {% else %}
+            <li class="fs-5 mb-3">{{ equipment }}</li>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    <div class="text-center my-5">
+        <h2 class="section-title mb-5">Latest Comments</h2>
+        <div class="comments">
+            {% if comments | length == 0 %}
+            <p>There's no any comments yet.</p>
+            <p>Be the first one to order this space and give us a feedback! :)</p>
+            {% else %}
+            <div id="carouselCommentsIndicators" class="carousel slide">
+                <div class="carousel-indicators">
+                    {% for i in range(comments | length) %}
+                    {% if i == 0 %}
+                    <button type="button" data-bs-target="#carouselCommentsIndicators" data-bs-slide-to="{{ i }}"
+                        class="active" aria-current="true" aria-label="Slide {{ i }}"></button>
+                    {% else %}
+                    <button type="button" data-bs-target="#carouselCommentsIndicators" data-bs-slide-to="{{ i }}"
+                        aria-label="Slide {{ i }}"></button>
+                    {% endif %}
+                    {% endfor%}
+                </div>
+                <div class="carousel-inner">
+                    {% for comment in comments %}
+                    {% if loop.index0 == 0 %}
+                    <div class="carousel-item active bg-secondary">
+                        <div class="text-box d-flex flex-column justify-content-center align-items-center">
+                            <p class="fs-5 m-5 text-truncate">{{ comment.comment }}</p>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <div class="carousel-item bg-secondary">
+                        <div class="text-box d-flex flex-column justify-content-center align-items-center">
+                            <p class="fs-5 m-5 text-truncate">{{ comment.comment }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if comments | length == 0 %}
+                {% else %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselCommentsIndicators"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselCommentsIndicators"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="my-5">
+        <h2 class="section-title mb-5 text-center">Rental terms</h2>
+        <div class="row justify-content-center">
+            <div class="w-auto">
+                <ul>
+                    <li>
+                        <p class="text-danger">
+                            For the customers' rights and orders' safety, we never change customers' rental time. We
+                            only modify the contact information in the order if the customer contacts the service
+                            department to help.
+                            <br>
+                            If you need to change the rental time, please delete the order by yourself and make a new
+                            order.
+                            <br>
+                            But if the rental start time is not before now over 48 hours, the order cannot be canceled
+                            in any condition.
+                        </p>
+                    </li>
+                    <li>
+                        <p>Please keep the environment clean.<br>
+                            Violators will be charged a cleaning fee of $100.</p>
+                    </li>
+                    <li>
+                        <p>Smoking and cooking are not allowed.</p>
+                    </li>
+                    <li>
+                        <p>Illegal activities are not allowed.</p>
+                    </li>
+                    <li>
+                        <p>This place is not for accommodation.</p>
+                    </li>
+                    <li>
+                        <p>Please record the venue restoration images before leaving and preserve then at least 7 days.
+                        </p>
+                        <p>We won't contact you to ask for the images proactively, but once something bad happened,
+                            they'll protect your rights.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center my-5">
+        <a href="{{ url_for('order', start=start, end=end, room=space.name) }}"><button type="submit"
+                class="btn btn-primary p-2 w-75">Register to Order</button></a>
+    </div>
+</div>
+
+{% endblock %}

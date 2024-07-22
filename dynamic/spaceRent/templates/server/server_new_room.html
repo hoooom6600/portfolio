@@ -1,0 +1,274 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+Staff System: Add New Room
+{% endblock %}
+
+{% block main %}
+<div class="container my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Add New Room</h2>
+    {% if add_room_fail %}
+    <p class="text-danger text-center">Please check if every information is filled.</p>
+    {% endif %}
+    {% if space_name_repeat %}
+    <p class="text-danger text-center">Space name repeat.</p>
+    {% endif %}
+    <form action="/new_room" method="post">
+        {% if add_room_fail or space_name_repeat %}
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="name" class="form-label"><span class="text-danger me-1">*</span>Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                    value="{{ request.form.name }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+                <label for="location" class="form-label"><span class="text-danger me-1">*</span>Location</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="Location"
+                    value="{{ request.form.location }}" required>
+            </div>
+            <div class="col-12 col-md-8 mb-3">
+                <label for="address" class="form-label"><span class="text-danger me-1">*</span>Address</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="Address"
+                    value="{{ request.form.address }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label for="capacity" class="form-label"><span class="text-danger me-1">*</span>Capacity</label>
+                <input type="number" min="1" step="1" class="form-control" id="capacity" name="capacity"
+                    placeholder="Capacity" value="{{ request.form.capacity }}" required>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label for="price" class="form-label"><span class="text-danger me-1">*</span>Price ($NTD)</label>
+                <input type="number" min="1" step="1" class="form-control" id="price" name="price" placeholder="Price"
+                    value="{{ request.form.price }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label for="cover" class="form-label"><span class="text-danger me-1">*</span>Cover Image</label>
+                <input type="file" class="form-control" id="cover" name="cover" placeholder="Cover Image"
+                    value="{{ request.form.cover }}" required>
+                <p class="form-text text-danger">
+                    Please upload the same image to the file named "static" before you submit the form.
+                    <br>
+                    If not doing so, the cover image won't show correctly.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            {% if request.form.ProjectorAndTouchscreen %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Projector And Touchscreen"
+                    name="ProjectorAndTouchscreen" id="ProjectorAndTouchscreen" checked>
+                <label class="form-check-label" for="ProjectorAndTouchscreen">
+                    Projector And Touchscreen
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Projector And Touchscreen"
+                    name="ProjectorAndTouchscreen" id="ProjectorAndTouchscreen">
+                <label class="form-check-label" for="ProjectorAndTouchscreen">
+                    Projector And Touchscreen
+                </label>
+            </div>
+            {% endif %}
+            {% if request.form["Wi-Fi"] %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Wi-Fi" name="Wi-Fi" id="Wi-Fi" checked>
+                <label class="form-check-label" for="Wi-Fi">
+                    Wi-Fi
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Wi-Fi" name="Wi-Fi" id="Wi-Fi">
+                <label class="form-check-label" for="Wi-Fi">
+                    Wi-Fi
+                </label>
+            </div>
+            {% endif %}
+            {% if request.form["A/C"] %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="A/C" name="A/C" id="A/C" checked>
+                <label class="form-check-label" for="A/C">
+                    A/C
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="A/C" name="A/C" id="A/C">
+                <label class="form-check-label" for="A/C">
+                    A/C
+                </label>
+            </div>
+            {% endif %}
+            {% if request.form.TeaAndCoffee %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Tea And Coffee" name="TeaAndCoffee"
+                    id="TeaAndCoffee" checked>
+                <label class="form-check-label" for="TeaAndCoffee">
+                    Tea And Coffee
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Tea And Coffee" name="TeaAndCoffee"
+                    id="TeaAndCoffee">
+                <label class="form-check-label" for="TeaAndCoffee">
+                    Tea And Coffee
+                </label>
+            </div>
+            {% endif %}
+            {% if request.form.BasicStationary %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Basic Stationary" name="BasicStationary"
+                    id="BasicStationary" checked>
+                <label class="form-check-label" for="BasicStationary">
+                    Basic Stationary
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Basic Stationary" name="BasicStationary"
+                    id="BasicStationary">
+                <label class="form-check-label" for="BasicStationary">
+                    Basic Stationary
+                </label>
+            </div>
+            {% endif %}
+            {% if request.form.A4Paper %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="A4 Paper" name="A4Paper" id="A4Paper" checked>
+                <label class="form-check-label" for="A4Paper">
+                    A4 Paper
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="A4 Paper" name="A4Paper" id="A4Paper">
+                <label class="form-check-label" for="A4Paper">
+                    A4 Paper
+                </label>
+            </div>
+            {% endif %}
+            {% if request.form.restroom %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Restroom" name="restroom" id="Restroom" checked>
+                <label class="form-check-label" for="Restroom">
+                    Restroom
+                </label>
+            </div>
+            {% else %}
+            <div class="col-12 col-md-4 my-3 form-check">
+                <input class="form-check-input" type="checkbox" value="Restroom" name="restroom" id="Restroom">
+                <label class="form-check-label" for="Restroom">
+                    Restroom
+                </label>
+            </div>
+            {% endif %}
+        </div>
+
+        {% else %}
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="name" class="form-label"><span class="text-danger me-1">*</span>Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+                <label for="location" class="form-label"><span class="text-danger me-1">*</span>Location</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="Location" required>
+            </div>
+            <div class="col-12 col-md-8 mb-3">
+                <label for="address" class="form-label"><span class="text-danger me-1">*</span>Address</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label for="capacity" class="form-label"><span class="text-danger me-1">*</span>Capacity</label>
+                <input type="number" class="form-control" id="capacity" name="capacity" placeholder="Capacity" required>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label for="price" class="form-label"><span class="text-danger me-1">*</span>Price ($NTD)</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="Price" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label for="cover" class="form-label"><span class="text-danger me-1">*</span>Cover Image</label>
+                <input type="file" class="form-control" id="cover" name="cover" placeholder="Cover Image" required>
+                <p class="form-text text-danger">
+                    Please upload the same image to the file named "static" before you submit the form.
+                    <br>
+                    If not doing so, the cover image won't show correctly.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label for="equipments" class="form-label"><span class="text-danger me-1">*</span>Equipments</label>
+                <div class="row">
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="Projector And Touchscreen"
+                            name="ProjectorAndTouchscreen" id="ProjectorAndTouchscreen">
+                        <label class="form-check-label" for="ProjectorAndTouchscreen">
+                            Projector And Touchscreen
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="Wi-Fi" name="Wi-Fi" id="Wi-Fi">
+                        <label class="form-check-label" for="Wi-Fi">
+                            Wi-Fi
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="A/C" name="A/C" id="A/C">
+                        <label class="form-check-label" for="A/C">
+                            A/C
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="Tea And Coffee" name="TeaAndCoffee"
+                            id="TeaAndCoffee">
+                        <label class="form-check-label" for="TeaAndCoffee">
+                            Tea And Coffee
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="Basic Stationary" name="BasicStationary"
+                            id="BasicStationary">
+                        <label class="form-check-label" for="BasicStationary">
+                            Basic Stationary
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="A4 Paper" name="A4Paper" id="A4Paper">
+                        <label class="form-check-label" for="A4Paper">
+                            A4 Paper
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-4 my-3 form-check">
+                        <input class="form-check-input" type="checkbox" value="Restroom" name="restroom" id="restroom">
+                        <label class="form-check-label" for="restroom">
+                            Restroom
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="mb-3 text-end">
+                <a href="/server_rooms" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

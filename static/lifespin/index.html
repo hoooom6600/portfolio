@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeSpin</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .chart-box {
+            overflow: hidden;
+            position: relative;
+            margin: auto;
+            width: 100%;
+            max-width: 500px;
+            max-height: 500px;
+            /* padding: 0 10px; */
+            box-sizing: border-box;
+        }
+
+        .pointer {
+            width: 0;
+            height: 0;
+            margin: 20px auto 0;
+            border-width: 15px;
+            border-style: solid;
+            border-top-color: #f00;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-bottom-width: 0;
+        }
+
+        #myChart {
+            margin: auto;
+            transition: 5s;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .btn-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-group button {
+            padding: 5px 10px;
+            cursor: pointer;
+            width: 150px;
+        }
+
+        .btn-group #spin.unavailable {
+            cursor: not-allowed;
+
+        }
+
+        .result {
+            margin: 20px 0;
+        }
+
+        .result .country-name {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .chance {
+            margin: 20px auto 0;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .chance h2,
+        .chance h3 {
+            text-align: center;
+        }
+
+        .chance li {
+            text-align: left;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 50px 25px;
+        }
+
+        .chance li img {
+            margin-right: 10px;
+            border: 1px solid #aaa;
+            display: inline-block;
+            padding: 5px;
+        }
+
+        .chance li span:first-child {
+            margin-right: 30px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        <h1>Where will you be born in next life?</h1>
+        <p>Country data source: <a href="https://restcountries.com/" target="_blank">https://restcountries.com/</a></p>
+    </div>
+    <div class="pointer"></div>
+
+    <div class="chart-box">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <div class="btn-group">
+        <button id="counterclockwise">counterclockwise</button>
+        <button id="clockwise">clockwise</button>
+    </div>
+
+    <div class="result">
+        <h2 class="country-name"></h2>
+    </div>
+    <hr>
+
+    <ul class="chance">
+        <h2>List of the chances</h2>
+        <h3>(rounding to 3 decimal places)</h3>
+    </ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script> -->
+    <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+
+    <script src="lifespin.js"></script>
+</body>
+
+</html>

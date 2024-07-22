@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahoo新聞CSS仿切 (Bootstrap)</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- menu nav -->
+    <!-- dark mode navbar 有兩種寫法，以下擇一使用 -->
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" data-bs-theme="dark"> -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+            <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- class z-* 用來處理三個 navbar 的圖層問題 (原本 menu navbar collapse 會被 search navbar, category navbar 蓋到一部份) -->
+            <!-- z-* 號碼還須考量到廣告區有定位問題，不過廣告區的定位是為了告示區塊說明，否則一般使用不需定位 -->
+            <div class="collapse navbar-collapse justify-content-center z-3" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#"><i
+                                class="fa-solid fa-house fs-6 me-1"></i>首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">電子信箱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">新聞</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">股市</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">氣象</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">運動</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Yahoo TV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">App 下載</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">購物中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">拍賣</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">更多...</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- search nav -->
+    <!-- 內聯CSS margin-top 用以處理 fixed-top 會脫離 DOM 造成遮蓋的狀況 -->
+    <!-- class z-* 用來處理三個 navbar 的圖層問題 (原本 menu navbar collapse 會被 search navbar, category navbar 蓋到一部份) -->
+    <!-- z-* 號碼還須考量到廣告區有定位問題，不過廣告區的定位是為了告示區塊說明，否則一般使用不需定位 -->
+    <nav class="navbar bg-white fixed-top z-2" style="margin-top: 55px;">
+        <!-- 以下 div 的 class 和 02.html 有差異，雖然看起來效果沒差，但這邊用法是 BS 5 規範的父子關係 (沒有尺寸還有數字的 col 要有父層 row )-->
+        <div class="container-fluid d-block" id="navbarSearch">
+            <div class="row d-flex justify-content-around align-items-center">
+                <div class="col-4 text-center">
+                    <a class="navbar-brand">
+                        <img class="img-fluid pe-2 pe-sm-0"
+                            src="https://s.yimg.com/rz/p/yahoo_news_zh-Hant-TW_h_p_newsv2.png" alt="yahoo LOGO">
+                    </a>
+                </div>
+                <div class="input-group-lg col-4 text-center">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-primary" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+                <div class="col-4 text-center">
+                    <button class="btn btn-outline-primary btn-sm border-2 px-3 rounded-pill fw-bold" type="button">
+                        <a class="nav-link" href="#">登入</a>
+                    </button>
+                    <button class="btn btn-sm" type="button">
+                        <a class="nav-link" href="#"><i class="fa-solid fa-envelope me-1"></i>信箱</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hot-search container-fluid justify-content-center mt-2">
+            <span class="badge text-bg-primary me-2">熱搜</span>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">白沙屯媽祖</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">00939</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">鈣片推薦</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">王世雄病逝</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">台南旅館</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">大S 汪小菲</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">防水防風外套</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">央行升息</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">大谷翔平</a>
+            <a href="#" class="px-1 link-underline link-underline-opacity-0 link-underline-opacity-100-hover">台積電</a>
+        </div>
+    </nav>
+
+    <!-- category navbar -->
+    <!-- 內聯 CSS margin-top 用以處理 fixed-top 會脫離 DOM 造成遮蓋的狀況 -->
+    <!-- 手動設定內聯 CSS transition, box-shadow -->
+    <!-- class z-* 用來處理三個 navbar 的圖層問題 (原本 menu navbar collapse 會被 search navbar, category navbar 蓋到一部份) -->
+    <nav class="navbar navbar-expand bg-white fixed-top z-1 pt-5 pt-md-3 pb-0"
+        style="margin-top: 125px; transition: top .5s; box-shadow: 0 3px 5px 3px rgba(200, 200, 200, .7);"
+        id="categoryNavbar">
+
+        <div class="container-fluid px-0 flex-column">
+
+            <!-- <div class="container-fluid px-0" id="navbarCategory"> -->
+            <div class="alerts w-100">
+                <div class="alert alert-info rounded-0 alert-dismissible fade show mb-0" role="alert">
+                    <h4 class="alert-heading">歡迎來到仿切 Yahoo 新聞!</h4>
+                    <p class="mb-0">歡迎閱讀本平台新聞，若有任何錯誤，請不吝嗇指教!</p>
+                    <button type="button" class="btn-close top-50 translate-middle" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                </div>
+                <div class="alert alert-warning d-flex align-items-center rounded-0 mb-0 justify-content-center"
+                    role="alert">
+                    <div>
+                        <p class="mb-0">本新聞網是由合作的媒體發佈，新聞平台不對內容負責任。</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-wrap justify-content-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        焦點
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">英凱特王妃罹癌</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo畫重點</a></li>
+                        <li><a class="dropdown-item" href="#">每日Yahoo焦點</a></li>
+                        <li><a class="dropdown-item" href="#">一周大事</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo獨家</a></li>
+                        <li><a class="dropdown-item" href="#">熱門新聞</a></li>
+                        <li><a class="dropdown-item" href="#">天氣</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">民調</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo國際通</a></li>
+                        <li><a class="dropdown-item" href="#">話題PK</a></li>
+                        <li><a class="dropdown-item" href="#">小測驗</a></li>
+                        <li><a class="dropdown-item" href="#">雜誌</a></li>
+                        <li><a class="dropdown-item" href="#">合作媒體</a></li>
+                        <li><a class="dropdown-item" href="#">新聞專輯</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        即時
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">娛樂即時</a></li>
+                        <li><a class="dropdown-item" href="#">國際即時</a></li>
+                        <li><a class="dropdown-item" href="#">政治即時</a></li>
+                        <li><a class="dropdown-item" href="#">社會即時</a></li>
+                        <li><a class="dropdown-item" href="#">財經即時</a></li>
+                        <li><a class="dropdown-item" href="#">生活即時</a></li>
+                        <li><a class="dropdown-item" href="#">運動即時</a></li>
+                        <li><a class="dropdown-item" href="#">科技即時</a></li>
+                        <li><a class="dropdown-item" href="#">健康即時</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        娛樂影劇
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Yahoo特派</a></li>
+                        <li><a class="dropdown-item" href="#">2024演唱會攻略</a></li>
+                        <li><a class="dropdown-item" href="#">日韓新聞</a></li>
+                        <li><a class="dropdown-item" href="#">院線電影</a></li>
+                        <li><a class="dropdown-item" href="#">追劇情報</a></li>
+                        <li><a class="dropdown-item" href="#">星座運勢</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        國際
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">英凱特王妃罹癌</a></li>
+                        <li><a class="dropdown-item" href="#">中港澳</a></li>
+                        <li><a class="dropdown-item" href="#">亞澳</a></li>
+                        <li><a class="dropdown-item" href="#">美洲</a></li>
+                        <li><a class="dropdown-item" href="#">歐非</a></li>
+                        <li><a class="dropdown-item" href="#">德國之聲</a></li>
+                        <li><a class="dropdown-item" href="#">BBC中文</a></li>
+                        <li><a class="dropdown-item" href="#">世界日報</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo國際通</a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        政治
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Yahoo論壇</a></li>
+                        <li><a class="dropdown-item" href="#">立法院直播</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        社會地方
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">全台即時水情</a></li>
+                        <li><a class="dropdown-item" href="#">全台即時用電</a></li>
+                        <li><a class="dropdown-item" href="#">大台北</a></li>
+                        <li><a class="dropdown-item" href="#">北台灣</a></li>
+                        <li><a class="dropdown-item" href="#">中部離島</a></li>
+                        <li><a class="dropdown-item" href="#">南台灣</a></li>
+                        <li><a class="dropdown-item" href="#">東台灣</a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        財經
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Yahoo特派</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo財經大人物</a></li>
+                        <li><a class="dropdown-item" href="#">股市匯市</a></li>
+                        <li><a class="dropdown-item" href="#">房地產</a></li>
+                        <li><a class="dropdown-item" href="#">好宅報報</a></li>
+                        <li><a class="dropdown-item" href="#">產業動態</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">理財就業</a></li>
+                        <li><a class="dropdown-item" href="#">|債市來襲|</a></li>
+                        <li><a class="dropdown-item" href="#">|ETF雙冠王|</a></li>
+                        <li><a class="dropdown-item" href="#">|賓士 CES 現場直擊|</a></li>
+                        <li><a class="dropdown-item" href="#">|ESG+|</a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        運動
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">棒球</a></li>
+                        <li><a class="dropdown-item" href="#">籃球</a></li>
+                        <li><a class="dropdown-item" href="#">高爾夫</a></li>
+                        <li><a class="dropdown-item" href="#">網球</a></li>
+                        <li><a class="dropdown-item" href="#">NBA</a></li>
+                        <li><a class="dropdown-item" href="#">MLB</a></li>
+                        <li><a class="dropdown-item" href="#">中華職棒</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo好棒棒</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        玩樂
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">熱門景點</a></li>
+                        <li><a class="dropdown-item" href="#">熱門美食</a></li>
+                        <li><a class="dropdown-item" href="#">日韓旅遊</a></li>
+                        <li><a class="dropdown-item" href="#">賞花步道</a></li>
+                        <li><a class="dropdown-item" href="#">懶人包</a></li>
+                        <li><a class="dropdown-item" href="#">旅遊達人</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">網友投稿遊記</a></li>
+                        <li><a class="dropdown-item" href="#">遊記投稿</a></li>
+                        <li><a class="dropdown-item" href="#">毛宇宙</a></li>
+                        <li><a class="dropdown-item" href="#">旅平險試算</a></li>
+                        <li><a class="dropdown-item" href="#">問Yahoo就對了</a></li>
+                        <li><a class="dropdown-item" href="#">|訊息快遞|</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        品味
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">流行精品</a></li>
+                        <li><a class="dropdown-item" href="#">保養彩妝</a></li>
+                        <li><a class="dropdown-item" href="#">名人特搜</a></li>
+                        <li><a class="dropdown-item" href="#">品味生活</a></li>
+                        <li><a class="dropdown-item" href="#">潮流#tag</a></li>
+                        <li><a class="dropdown-item" href="#">裝潢佈置</a></li>
+                        <li><a class="dropdown-item" href="#">秒懂生活</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo生日慶必Buy</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        健康
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">心理健康</a></li>
+                        <li><a class="dropdown-item" href="#">慢性病</a></li>
+                        <li><a class="dropdown-item" href="#">癌症新聞</a></li>
+                        <li><a class="dropdown-item" href="#">養生飲食</a></li>
+                        <li><a class="dropdown-item" href="#">塑身減重</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">免疫力</a></li>
+                        <li><a class="dropdown-item" href="#">症狀Q&A</a></li>
+                        <li><a class="dropdown-item" href="#">|維持好體力|</a></li>
+                        <li><a class="dropdown-item" href="#">|家事科學大解密|</a></li>
+                        <li><a class="dropdown-item" href="#">|上班族補氣|</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        遊戲3C
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">遊戲新聞</a></li>
+                        <li><a class="dropdown-item" href="#">遊戲攻略</a></li>
+                        <li><a class="dropdown-item" href="#">電競賽事</a></li>
+                        <li><a class="dropdown-item" href="#">Y5遊戲</a></li>
+                        <li><a class="dropdown-item" href="#">Yahoo Tech</a></li>
+                        <li><a class="dropdown-item" href="#">CES 2024</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">果粉專區</a></li>
+                        <li><a class="dropdown-item" href="#">科技新聞</a></li>
+                        <li><a class="dropdown-item" href="#">手機新聞</a></li>
+                        <li><a class="dropdown-item" href="#">|3C大事紀|</a></li>
+                        <li><a class="dropdown-item" href="#">《戰意》新賽季</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" role="button" aria-expanded="false">
+                        Yahoo生日慶
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" role="button" aria-expanded="false">
+                        |上班族補氣|
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        ...
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">|新國民ETF|</a></li>
+                        <li><a class="dropdown-item" href="#">更多新聞專輯</a></li>
+                        <li><a class="dropdown-item" href="#">我的追蹤</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- </div> -->
+        </div>
+    </nav>
+
+    <!-- 墊高防止 fixed-top 覆蓋的 div -->
+    <div style="padding-top: 380px;"></div>
+    <div class="mt-5 pt-5 mt-xl-0 pt-sm-0"></div>
+
+    <!-- 內聯CSS margin-top 用以處理 fixed-top 會脫離 DOM 造成遮蓋的狀況。因為前面有三個組件是 fixed-top ，所以距離要抓更多 -->
+    <div class="info">
+        <h1 class="text-center">自學網頁の嬰兒教材：第5課 ── 訊息框框：有話對你說</h1>
+        <a target="_blank" class="d-block text-center"
+            href="https://tw.news.yahoo.com/%E5%8F%B0%E9%9F%93%E5%9C%96%E6%9B%B8%E9%A4%A8%E5%90%88%E4%BD%9C%E4%BA%A4%E6%B5%81-%E5%8A%A0%E5%BC%B7%E5%8F%A4%E7%B1%8D%E6%95%B8%E4%BD%8D%E5%8C%96%E8%88%87%E5%85%B8%E8%97%8F%E7%B6%93%E9%A9%97-123827438.html">原文出處</a>
+    </div>
+
+    <div class="container">
+        <div class="row row-cols-md-2">
+            <div class="col-lg-9 col-md-12">
+                <div class="press-company d-flex align-items-center">
+                    <!-- 手動增加尺寸屬性 -->
+                    <img src="https://s.yimg.com/ny/api/res/1.2/wN3IqmQyj8bp5Q3MCr0XFg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEwMjtoPTQ4O2NmPXdlYnA-/https://s.yimg.com/os/creatr-uploaded-images/2020-10/3ac7fa10-0867-11eb-9fff-a572ef106b09"
+                        alt="press company" height="25px">
+                    <p class="mb-0 me-2 fs-6"> | 35.3k 追蹤</p>
+                    <button class="btn btn-sm border-secondary border-2 rounded-pill" type="button"><i
+                            class="fa-regular fa-star me-2"></i>追蹤</button>
+                </div>
+                <h1 class="title fw-bold">台韓圖書館合作交流 加強古籍數位化與典藏經驗</h1>
+
+                <div class="row row-cols-2">
+
+                    <div class="col-1 text-center">
+                        <a href="#" class="link-dark link-underline link-underline-opacity-0 d-block"><i
+                                class="fa-regular fa-comment fs-5 mt-5"></i></a>
+                        <a href="#" class="link-dark link-underline link-underline-opacity-0 d-block"><i
+                                class="fa-brands fa-line fs-5 mt-5"></i></a>
+                        <a href="#" class="link-dark link-underline link-underline-opacity-0 d-block"><i
+                                class="fa-brands fa-facebook-f fs-5 mt-5"></i></a>
+                        <a href="#" class="link-dark link-underline link-underline-opacity-0 d-block"><i
+                                class="fa-solid fa-link fs-5 mt-5"></i></a>
+                        <a href="#" class="link-dark link-underline link-underline-opacity-0 d-block"><i
+                                class="fa-solid fa-envelope fs-5 mt-5"></i></a>
+                    </div>
+                    <div class="col-11">
+                        <div class="source mt-4 mb-2">
+                            <p class="author fw-bold">The Central News Agency 中央通訊社</p>
+                            <p class="time">2024年3月20日 週三 下午8:38</p>
+                            <div class="row row-cols-1">
+                                <div class="col-4">
+                                    <div class="row row-cols-3 g-0">
+                                        <!-- 原本用 border 去撐高度，但因為 BS 沒有 box-sizing: border-box; 的設定，所以就會折行  -->
+                                        <!-- <hr class="border border-3 border-black opacity-100 col-8">
+                                        <hr class="border border-3 border-white opacity-100 col-1">
+                                        <hr class="border border-3 border-warning opacity-100 col-3"> -->
+
+                                        <!-- 未解決裝飾線需求，改用 padding 去撐高度 -->
+                                        <hr class="py-1 border-0 bg-black opacity-100 col-8">
+                                        <hr class="py-1 border-0 bg-white opacity-100 col-1">
+                                        <hr class="py-1 border-0 bg-warning opacity-100 col-3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p>（中央社記者邱祖胤台北20日電）台韓圖書館合作交流更上層樓，國家圖書館與韓國國學振興院今天簽署合作協議，雙方也安排專業研究人員就古籍數位化、文獻保存進行專題報告。</p>
+                            <p>根據國家圖書館發布新聞稿，台韓雙方分別簽署「綜合性合作協議」與「中文古籍聯合目錄合作協議」，並互贈館藏柳成龍「懲毖錄」、元代中興路資福寺刊本「金剛般若波羅蜜經」國寶級文物複製品。
+                            </p>
+                            <p>國家圖書館館長王涵青致詞表示，這次合作使得韓國國學振興院成為國圖「綜合性合作協議」合作案第29個夥伴，以及「中文古籍聯合目錄合作協議」第94個合作機構，期待雙方共同為人類文明資產維護與運用一起努力。
+                            </p>
+                            <p>韓國國學振興院院長鄭宗燮致詞表示，近年來該院不只在推動韓國的文獻文化遺產各類項目，包括持續研究傳統文化並解釋其價值和意義，引領韓國學在各領域的研究與推展，更朝向以數位化研究等議題邁進，迎接新的轉型期。
+                            </p>
+                            <p>鄭宗燮表示，期盼藉由本次來台與國圖及中央研究院交流，增進雙邊學術聯繫、書刊交換、人員交流與資源分享。</p>
+                            <p>韓國國學振興院成立於1995年，院址設於韓國「儒學之鄉」慶尚北道安東市，該院有系統地研究、廣泛收集韓國民間文獻遺產，所藏資料僅古籍文獻就超過65萬冊，並有多件獲聯合國教科文組織登錄為世界文化遺產。該院發展迄今已成為韓國國學推廣與研究重要領導機構之一，頗受國際學術界矚目。（編輯：張雅淨）1130320
+                            </p>
+
+                            <!-- z-* 號碼還須考量到兩個 navbar 有定位問題，不過廣告區的定位是為了告示區塊說明，否則一般使用不需定位 -->
+                            <a href="#">
+                                <div class="horizontal-ad position-relative">
+                                    <img class="img-fluid" src="https://picsum.photos/1200/150?random=1"
+                                        alt="advertisement">
+                                    <p class="position-absolute top-50 start-50 translate-middle">這邊是廣告區</p>
+                                </div>
+                            </a>
+
+                            <hr class="border border-black opacity-100">
+
+                            <div class="comments mb-5">
+                                <p><i class="fa-regular fa-comment-dots me-2"></i>成為第一個留言的人</p>
+                                <div class="d-grid">
+                                    <button class="btn btn-sm border-secondary text-start text-primary rounded-0"
+                                        type="button">登入後即可張貼留言。</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="border border-5 border-black opacity-100 mt-5">
+                <div class="recommend">
+                    <h3 class="fs-4 text-start fw-bold">其他人也在看</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item border-0 p-0 my-3 text-start">
+                            <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                <div class="row row-cols-lg-2 row-cols-md-1 align-items-lg-center align-items-xl-start">
+                                    <div class="pic col-lg-3 col-12">
+                                        <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=2"
+                                            alt="">
+                                    </div>
+                                    <div class="txt col-lg-9 col-12 d-flex flex-column justify-content-between">
+                                        <div class="article">
+                                            <p class="source-date badge p-0 text-start m-0 text-secondary">媒體公司．n天前</p>
+                                            <p class="title fs-6 fw-bold text-start m-0 text-dark link-primary">
+                                                新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                            </p>
+                                            <p
+                                                class="detail-clip fs-6 text-start m-0 text-secondary text-truncate text-wrap">
+                                                內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段</p>
+                                        </div>
+
+                                        <div class="comment-num">
+                                            <p class="text-secondary link-primary m-0">
+                                                <i class="fa-regular fa-comment me-1"></i>n
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 p-0 my-3 text-start">
+                            <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                <div class="row row-cols-lg-2 row-cols-md-1 align-items-lg-center align-items-xl-start">
+                                    <div class="pic col-lg-3 col-12">
+                                        <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=3"
+                                            alt="">
+                                    </div>
+                                    <div class="txt col-lg-9 col-12 d-flex flex-column justify-content-between">
+                                        <div class="article">
+                                            <p class="source-date badge p-0 text-start m-0 text-secondary">媒體公司．n天前</p>
+                                            <p class="title fs-6 fw-bold text-start m-0 text-dark link-primary">
+                                                新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                            </p>
+                                            <p
+                                                class="detail-clip fs-6 text-start m-0 text-secondary text-truncate text-wrap">
+                                                內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段</p>
+                                        </div>
+
+                                        <div class="comment-num">
+                                            <p class="text-secondary link-primary m-0">
+                                                <i class="fa-regular fa-comment me-1"></i>n
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 p-0 my-3 text-start">
+                            <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                <div class="row row-cols-lg-2 row-cols-md-1 align-items-lg-center align-items-xl-start">
+                                    <div class="pic col-lg-3 col-12">
+                                        <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=4"
+                                            alt="">
+                                    </div>
+                                    <div class="txt col-lg-9 col-12 d-flex flex-column justify-content-between">
+                                        <div class="article">
+                                            <p class="source-date badge p-0 text-start m-0 text-secondary">媒體公司．n天前</p>
+                                            <p class="title fs-6 fw-bold text-start m-0 text-dark link-primary">
+                                                新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                            </p>
+                                            <p
+                                                class="detail-clip fs-6 text-start m-0 text-secondary text-truncate text-wrap">
+                                                內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段內文片段</p>
+                                        </div>
+
+                                        <div class="comment-num">
+                                            <p class="text-secondary link-primary m-0">
+                                                <i class="fa-regular fa-comment me-1"></i>n
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12">
+
+                <!-- z-* 號碼還須考量到兩個 navbar 有定位問題，不過廣告區的定位是為了告示區塊說明，否則一般使用不需定位 -->
+                <div class="attachments text-center fs-1">
+                    <a href="#">
+                        <div class="vertical-ad position-relative">
+                            <img class="img-fluid rounded" src="https://picsum.photos/500/900?random=5"
+                                alt="advertisement">
+                            <p class="position-absolute top-50 start-50 translate-middle">這邊是廣告區</p>
+                        </div>
+                    </a>
+
+                    <div class="hot my-4">
+                        <h3 class="fs-5 text-lg-start text-md-center fw-bold">熱門新聞</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 p-0 my-1 text-lg-start text-center">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 d-flex justify-content-center align-items-center">
+                                    <span class="fs-3 fw-bold text-warning me-3">1.</span>
+                                    <p class="fs-5 fw-medium text-dark link-primary my-0">新聞標題新聞標題新聞標題新聞標題</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-1 text-lg-start text-center">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 d-flex justify-content-center align-items-center">
+                                    <span class="fs-3 fw-bold text-warning me-3">2.</span>
+                                    <p class="fs-5 fw-medium text-dark link-primary my-0">新聞標題新聞標題新聞標題新聞標題</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-1 text-lg-start text-center">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 d-flex justify-content-center align-items-center">
+                                    <span class="fs-3 fw-bold text-warning me-3">3.</span>
+                                    <p class="fs-5 fw-medium text-dark link-primary my-0">新聞標題新聞標題新聞標題新聞標題</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-1 text-lg-start text-center">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 d-flex justify-content-center align-items-center">
+                                    <span class="fs-3 fw-bold text-warning me-3">4.</span>
+                                    <p class="fs-5 fw-medium text-dark link-primary my-0">新聞標題新聞標題新聞標題新聞標題</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-1 text-lg-start text-center">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 d-flex justify-content-center align-items-center">
+                                    <span class="fs-3 fw-bold text-warning me-3">5.</span>
+                                    <p class="fs-5 fw-medium text-dark link-primary my-0">新聞標題新聞標題新聞標題新聞標題</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- z-* 號碼還須考量到兩個 navbar 有定位問題，不過廣告區的定位是為了告示區塊說明，否則一般使用不需定位 -->
+                    <a href="#">
+                        <div class="vertical-ad position-relative">
+                            <img class="img-fluid rounded" src="https://picsum.photos/500/500?random=6"
+                                alt="advertisement">
+                            <p class="position-absolute top-50 start-50 translate-middle">這邊是廣告區</p>
+                        </div>
+                    </a>
+
+                    <div class="special-edit my-4">
+                        <h3 class="fs-5 text-lg-start text-md-center fw-bold">精選編輯</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 p-0 my-3">
+                                <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                    <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=7" alt="">
+                                    <p
+                                        class="fs-6 fw-medium text-lg-start text-md-center mt-2 mb-0 text-dark link-primary">
+                                        新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                    </p>
+                                    <p class="fs-6 text-lg-start text-md-center m-0 text-secondary">新聞媒體公司名稱 / 記者姓名</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-3">
+                                <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                    <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=8" alt="">
+                                    <p
+                                        class="fs-6 fw-medium text-lg-start text-md-center mt-2 mb-0 text-dark link-primary">
+                                        新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                    </p>
+                                    <p class="fs-6 text-lg-start text-md-center m-0 text-secondary">新聞媒體公司名稱 / 記者姓名</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-3">
+                                <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                    <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=9" alt="">
+                                    <p
+                                        class="fs-6 fw-medium text-lg-start text-md-center mt-2 mb-0 text-dark link-primary">
+                                        新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                    </p>
+                                    <p class="fs-6 text-lg-start text-md-center m-0 text-secondary">新聞媒體公司名稱 / 記者姓名</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-3">
+                                <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                    <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=10" alt="">
+                                    <p
+                                        class="fs-6 fw-medium text-lg-start text-md-center mt-2 mb-0 text-dark link-primary">
+                                        新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                    </p>
+                                    <p class="fs-6 text-lg-start text-md-center m-0 text-secondary">新聞媒體公司名稱 / 記者姓名</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item border-0 p-0 my-3">
+                                <a href="#" class="link-underline link-underline-opacity-0 d-block">
+                                    <img class="img-fluid rounded" src="https://picsum.photos/900/600?random=11" alt="">
+                                    <p
+                                        class="fs-6 fw-medium text-lg-start text-md-center mt-2 mb-0 text-dark link-primary">
+                                        新聞標題新聞標題新聞標題新聞標題新聞標題新聞標題
+                                    </p>
+                                    <p class="fs-6 text-lg-start text-md-center m-0 text-secondary">新聞媒體公司名稱 / 記者姓名</p>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer bg-body-secondary p-5">
+        <div class="container-fluid">
+            <div class="brand-logo mb-3 text-center text-md-start">
+                <!-- 用 ul li 包，是為了和 footer 導覽地圖同 padding，讓圖片和文字左側對齊 -->
+                <ul class="list-group bg-transparent">
+                    <li class="list-group-item border-0 bg-transparent">
+                        <a href="#" class="">
+                            <img class="img-fluid" src="https://s.yimg.com/rz/p/yahoo_news_zh-Hant-TW_h_p_news_2.png"
+                                alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row row-cols-md-2">
+                <div class="col-md-8">
+                    <div class="row row-cols-3 justify-content-center justify-content-md-start">
+                        <div class="col-4 col-md-2">
+                            <ul class="list-group bg-transparent">
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">焦點</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">即時</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">娛樂影劇</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">國際</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">政治</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">社會地方</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">財經</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">運動</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">玩樂</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-4 col-md-2">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">品味</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">健康</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">遊戲3C</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">Yahoo生日慶</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">|上班族補氣|</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">|新國民ETF|</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">更多新聞專輯</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">我的追蹤</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge text-wrap link-secondary link-underline link-underline-opacity-0">服務條款
+                                        和
+                                        隱私權保護政策</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">隱私權儀表板</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">服務中心</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">分享意見</a>
+                                </li>
+                                <li class="list-group-item border-0 bg-transparent">
+                                    <a href="#"
+                                        class="badge link-secondary link-underline link-underline-opacity-0">關於我們的廣告</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="follow mt-5 mb-5 mt-md-0">
+                        <p class="badge text-secondary">在此處追蹤我們：</p>
+                        <div class="follow-media d-flex flex-nowrap justify-content-center">
+                            <a href="#" class="link-dark link-underline link-underline-opacity-0 mx-3"><i
+                                    class="fa-brands fa-facebook-f fs-5"></i></a>
+                            <a href="#" class="link-dark link-underline link-underline-opacity-0 mx-3"><i
+                                    class="fa-brands fa-line fs-5"></i></a>
+                            <a href="#" class="link-dark link-underline link-underline-opacity-0 mx-3"><i
+                                    class="fa-brands fa-square-instagram fs-4"></i></a>
+                            <a href="#" class="link-dark link-underline link-underline-opacity-0 mx-3"><i
+                                    class="fa-brands fa-youtube fs-4"></i></a>
+                        </div>
+                    </div>
+                    <div class="app mt-5 mt-md-0">
+                        <p class="badge text-secondary">下載我們的應用程式</p>
+                        <div class="app-platform d-flex justify-content-center">
+                            <div class="row row-cols-md-2 d-flex flex-row flex-md-column flex-lg-row">
+                                <div class="col mb-md-3 mb-lg-0">
+                                    <a href="#">
+                                        <!-- 手動設定內聯圖片尺寸 -->
+                                        <img class="img-fluid"
+                                            src="https://s.yimg.com/cv/apiv2/default/20190724/app-store-icon@3x.png"
+                                            alt="app store" style="max-width: 142px; height: 100%;"></a>
+                                </div>
+                                <div class="col">
+                                    <a href="#">
+                                        <!-- 手動設定內聯圖片尺寸 -->
+                                        <img class="img-fluid"
+                                            src="https://s.yimg.com/cv/apiv2/default/20190724/google-play-icon@3x.png"
+                                            alt="google play" style="max-width: 142px; height: 100%;"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright text-md-start text-center">
+                    <p class="badge text-secondary mt-5 mb-0">© 2024 Yahoo. All rights reserved.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 卷軸往下拉，categoryNavbar 隱藏，反之則顯示
+        let lastScrollTop = 0;
+        let navbar = document.getElementById('categoryNavbar');
+
+        window.addEventListener('scroll', function () {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // 卷軸往下拉
+            if (scrollTop > lastScrollTop) {
+                navbar.style.top = '-350px';
+
+                // 已開啟的 dropdown-menu 要自動關閉
+                if (document.querySelector('.dropdown-menu.show')) {
+                    let dropdowns = document.querySelector('.dropdown-menu.show');
+                    dropdowns.classList.remove('show');
+                }
+            }
+            // 往上
+            else {
+                navbar.style.top = '0';
+            }
+
+            lastScrollTop = scrollTop;
+
+        });
+
+    </script>
+</body>
+
+</html>

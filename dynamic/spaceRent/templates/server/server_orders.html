@@ -1,0 +1,49 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+Staff System: Orders List
+{% endblock %}
+
+{% block main %}
+<div class="container-md my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Orders List</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center align-middle">ID</th>
+                    <th class="text-center align-middle">Application Date</th>
+                    <th class="text-center align-middle">Status</th>
+                    <th class="text-center align-middle">Username</th>
+                    <th class="text-center align-middle">Space</th>
+                    <th class="text-center align-middle">Total ($NTD)</th>
+                    <th class="text-center align-middle">Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="text-center align-middle">{{ order.id }}</td>
+                    <td class="text-center align-middle">{{ order.application_date }}</td>
+                    {% if order.status == 'Canceled' %}
+                    <td class="text-center align-middle text-danger">{{ order.status }}</td>
+                    {% else %}
+                    <td class="text-center align-middle text-success">{{ order.status }}</td>
+                    {% endif %}
+                    <td class="text-center align-middle">{{ order.username }}</td>
+                    <td class="text-center align-middle">{{ order.space }}</td>
+                    <td class="text-center align-middle">{{ order.total }}</td>
+                    <td class="text-center align-middle">
+                        <a href="{{ url_for('delete_orders', id=order.id) }}" class="btn btn-outline-secondary my-1"><i
+                                class="fa-solid fa-trash-can"></i></a>
+                        <a href="{{ url_for('server_orders', id=order.id) }}" class="btn btn-outline-secondary my-1"><i
+                                class="fa-solid fa-pen-to-square"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

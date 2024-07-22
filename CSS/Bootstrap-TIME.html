@@ -1,0 +1,2854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIME雜誌CSS仿切 (Bootstrap)</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+
+    <!-- slick -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
+
+    <style>
+        @media screen and (max-width: 991px) {
+            .photo-credit {
+                background-color: #fff;
+                color: #212529;
+                width: 100%;
+            }
+        }
+
+        @media screen and (min-width: 992px) {
+            .photo-credit {
+                background-color: #212529;
+                color: #fff;
+                width: auto;
+            }
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin-right: 15%;
+            margin-bottom: 1rem;
+            margin-left: 15%;
+            bottom: 100%;
+        }
+
+        .carousel-indicators [data-bs-target] {
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: 30px;
+            height: 3px;
+            padding: 0;
+            margin-right: 3px;
+            margin-left: 3px;
+            text-indent: -999px;
+            cursor: pointer;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            opacity: .5;
+            transition: opacity .6s ease;
+
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-left: 10px;
+            background-color: #666;
+        }
+
+        .carousel-indicators .active {
+            opacity: 1
+        }
+
+        .slick-next {
+            right: 10px;
+            z-index: 1;
+        }
+
+        .slick-prev {
+            left: 10px;
+            z-index: 1;
+        }
+
+        .slick-next::before,
+        .slick-prev::before {
+            font-size: 30px;
+        }
+
+
+
+        .subscribe-ad .container-xl {
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI1MDQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxwYXRoIGlkPSJhIiBkPSJNMCAwaDE0NDB2NTA0SDB6Ii8+PC9kZWZzPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PG1hc2sgaWQ9ImIiIGZpbGw9IiNmZmYiPjx1c2UgeGxpbms6aHJlZj0iI2EiLz48L21hc2s+PHVzZSBmaWxsPSIjRjVFNEREIiB4bGluazpocmVmPSIjYSIvPjxlbGxpcHNlIGZpbGw9IiNGNkYwRUMiIG1hc2s9InVybCgjYikiIGN4PSItNTk5LjUiIGN5PSI3MDkiIHJ4PSIxMzA4LjUiIHJ5PSI5NjIiLz48L2c+PC9zdmc+');
+        }
+
+        .overlay {
+            background: linear-gradient(0deg, #000, transparent 50%);
+        }
+
+        .you-should-know .pc {
+            overflow: hidden;
+        }
+
+        .know-item-pc {
+            transition: transform .35s;
+        }
+
+        .know-item-pc:hover {
+            transform: scale(1.025);
+        }
+
+        /* 強制 slick 套件的 slide 同高，用以邊框線長度統一化 */
+        .feature .mobile-carousel .slick-track {
+            display: flex !important;
+        }
+
+        /* 強制 slick 套件的 slide 同高，用以邊框線長度統一化 */
+        .feature .mobile-carousel .slick-slide {
+            height: inherit !important;
+        }
+
+        .subscribe-ad-text {
+            max-width: 300px;
+        }
+    </style>
+</head>
+
+<body style="height: 1500px;">
+    <div class="container-fluid bg-body-tertiary fixed-top" id="topNavbarGroup">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary d-none d-lg-block py-0" id="topNavbar">
+            <div class="container-fluid d-block">
+                <div class="row align-items-center">
+                    <a class="col navbar-brand fw-bold text-danger text-center fs-2 order-1 py-0"
+                        href="https://time.com/" target="_blank">TIME</a>
+                    <ul class="col navbar-nav ms-3 order-0 justify-content-start">
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold text-danger text-capitalize" href="#">Sign Up for Our
+                                Newsletter<i class="fa-solid fa-angles-right ms-1"></i></a>
+                        </li>
+                    </ul>
+                    <ul class="col navbar-nav me-3 order-2 justify-content-end">
+                        <li class="nav-item me-2">
+                            <a class="nav-link fw-bold text-danger text-uppercase" href="#">Sign In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class=" fw-bold text-white btn btn-danger text-uppercase" href="#">Subscribe</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <nav class="navbar bg-body-tertiary py-0">
+            <div class="container-fluid d-block">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col col-lg-2 ms-md-3 d-flex align-items-center">
+                        <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a id="collapseBrand"
+                            class="navbar-brand fw-bold text-danger text-center fs-2 opacity-0 pe-none m-0 ms-3"
+                            href="https://time.com/" target="_blank">TIME</a>
+                    </div>
+                    <div class="col text-center">
+                        <a class="navbar-brand fw-bold text-danger text-center fs-2 d-lg-none m-0"
+                            href="https://time.com/" target="_blank">TIME</a>
+                        <a class="navbar-brand text-danger text-center small d-none d-lg-block text-black link-danger text-uppercase m-0"
+                            href="#"><i class="fa-regular fa-paper-plane me-2 text-white bg-black rounded-circle"
+                                style="width: 25px;height: 25px;"></i>Sign Up for Our
+                            Entertainment
+                            Newsletter
+                        </a>
+                    </div>
+                    <div class="col col-lg-2 me-md-3">
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 150px;">
+                        <li class="nav-item">
+                            <p class="my-2 fw-bold text-uppercase">SECTIONS</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">U.S.</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Politics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">World</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Health</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Climate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Future of Work by Charter</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Business</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Tech</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Entertainment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Ideas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Science</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Sports</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Magazine</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME 2030</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Next Generation Leaders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME100 Leadership Series</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME Studios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Video</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME100 Talks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIMEPieces</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">The TIME Vault</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME for Health</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME for Kids</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME Edge</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME CO2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Red Border: Branded Content by
+                                TIME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Coupons</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Personal Finance by TIME Stamped</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Shopping by TIME Stamped</a>
+                        </li>
+                        <li>
+                            <hr class="nav-divider">
+                        </li>
+                        <li class="nav-item">
+                            <p class="my-2 fw-bold text-uppercase">JOIN US</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Newsletters</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Subscribe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Give a Gift</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Shop the TIME Store</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">TIME Cover Store</a>
+                        </li>
+                        <li>
+                            <hr class="nav-divider">
+                        </li>
+                        <li class="nav-item">
+                            <p class="my-2 fw-bold text-uppercase">CUSTOMER CARE</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">US & Canada</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Global Help Center</a>
+                        </li>
+                        <li>
+                            <hr class="nav-divider">
+                        </li>
+                        <li class="nav-item">
+                            <p class="my-2 fw-bold text-uppercase">REACH OUT</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Careers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Press Room</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Contact the Editors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Media Kit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Reprints and Permissions</a>
+                        </li>
+                        <li>
+                            <hr class="nav-divider">
+                        </li>
+                        <li class="nav-item">
+                            <p class="my-2 fw-bold text-uppercase">MORE</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Privacy Policy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Your Privacy Rights</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Terms of Use</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Modern Slavery Statement</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary link-danger" href="#">Site Map</a>
+                        </li>
+                        <li>
+                            <hr class="nav-divider">
+                        </li>
+                        <ul class="list-unstyled">
+                            <li class="nav-item">
+                                <p class="my-2 fw-bold text-uppercase">CONNECT WITH US</p>
+                            </li>
+                            <li class="nav-item d-inline-block me-2">
+                                <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                                    style="width: 30px; height: 30px;" href="#"><i
+                                        class="fa-brands fa-facebook-f"></i></a>
+                            </li>
+                            <li class="nav-item d-inline-block me-2">
+                                <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                                    style="width: 30px; height: 30px;" href="#"><i
+                                        class="fa-brands fa-instagram"></i></a>
+                            </li>
+                            <li class="nav-item d-inline-block me-2">
+                                <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                                    style="width: 30px; height: 30px;" href="#"><i class="fa-brands fa-twitter"></i></a>
+                            </li>
+                            <li class="nav-item d-inline-block me-2">
+                                <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                                    style="width: 30px; height: 30px;" href="#"><i
+                                        class="fa-brands fa-pinterest-p"></i></a>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+    <div class="container-md content">
+        <h2 class="text-center d-sm-none">現在是xs</h2>
+        <h2 class="text-center d-none d-sm-block d-md-none">現在是sm</h2>
+        <h2 class="text-center d-none d-md-block d-lg-none">現在是md</h2>
+        <h2 class="text-center d-none d-lg-block d-xl-none">現在是lg</h2>
+        <h2 class="text-center d-none d-xl-block d-xxl-none">現在是xl</h2>
+        <h2 class="text-center d-none d-xxl-block">現在是xxl</h2>
+
+        <h1 style="text-align: center;">RWD 網頁設計入門：第6課 ── 親手搞定一個完整的 RWD 網頁！</h1>
+        <p style="text-align: center;">2024.03.31時， time magazine 不如作業指示的圖片排版，但此作業仍以目前 time magazine 排版為準</p>
+        <p style="text-align: center;">本作業手機尺寸定義為 sm 以下（含）；平板為 md ； 電腦為 lg 以上（含）</p>
+
+        <div class="row headline">
+            <div class="col-lg-9">
+                <div class="row g-0 position-relative">
+                    <div class="col-md-3 order-1 order-md-0 bg-body text-body m-0 p-3" data-bs-theme="dark"><a href="#"
+                            class="link-underline link-underline-opacity-0 text-white d-block">
+                            Lorem
+                            ipsum
+                            dolor
+                            sit amet
+                            consectetur adipisicing elit.
+                            Molestias voluptatibus
+                            minima,
+                            blanditiis eos sunt dolorum.
+                        </a>
+                        <p class="m-0">reading time</p>
+                        <p class="m-0 text-danger">edit time</p>
+                        <p class="m-0">subtitle</p>
+                    </div>
+                    <a href="#" class="col-md-9">
+                        <img class="img-fluid h-100" src="https://picsum.photos/900/450?random=1" alt="">
+                    </a>
+                    <span class="photo-credit position-absolute end-0 bottom-0 z-1 text-end m-0 p-2 small">photo
+                        credit</span>
+                </div>
+                <div class="row mt-md-3">
+                    <div class="col-12 col-md">
+                        <a href="#" class="link-underline link-underline-opacity-0 text-dark link-danger">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=2" alt="">
+                            <p class="mt-1 mt-md-4 mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Molestias
+                                voluptatibus minima,
+                                blanditiis eos sunt dolorum.</p>
+                        </a>
+                        <p class="text-dark mb-1">
+                            reading time
+                        </p>
+                        <p class="text-dark mb-1">edit time</p>
+
+                    </div>
+                    <div class="col-12 col-md">
+                        <a href="#" class="link-underline link-underline-opacity-0 text-dark link-danger">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=2" alt="">
+                            <p class="mt-1 mt-md-4 mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Molestias
+                                voluptatibus minima,
+                                blanditiis eos sunt dolorum.</p>
+                        </a>
+                        <p class="text-dark mb-1">
+                            reading time
+                        </p>
+                        <p class="text-dark mb-1">edit time</p>
+                    </div>
+                    <div class="col-12 col-md">
+                        <a href="#" class="link-underline link-underline-opacity-0 text-dark link-danger">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=2" alt="">
+                            <p class="mt-1 mt-md-4 mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Molestias
+                                voluptatibus minima,
+                                blanditiis eos sunt dolorum.</p>
+                        </a>
+                        <p class="text-dark mb-1">
+                            reading time
+                        </p>
+                        <p class="text-dark mb-1">edit time</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+                <h2 class="text-center">MOST READ</h2>
+            </div>
+        </div>
+        <div class="row you-should-know">
+            <h2 class="text-center my-5 text-uppercase">you should know</h2>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block position-relative">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                        <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                        <div class="position-absolute bottom-0 start-0 ms-3">
+                            <p class="text-white badge text-bg-danger">
+                                category
+                            </p>
+                            <p class="text-white">title</p>
+                            <p class="text-white small">author</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block position-relative">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                        <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                        <div class="position-absolute bottom-0 start-0 ms-3">
+                            <p class="text-white badge text-bg-danger">
+                                category
+                            </p>
+                            <p class="text-white">title</p>
+                            <p class="text-white small">author</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block position-relative">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                        <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                        <div class="position-absolute bottom-0 start-0 ms-3">
+                            <p class="text-white badge text-bg-danger">
+                                category
+                            </p>
+                            <p class="text-white">title</p>
+                            <p class="text-white small">author</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block position-relative">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                        <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                        <div class="position-absolute bottom-0 start-0 ms-3">
+                            <p class="text-white badge text-bg-danger">
+                                category
+                            </p>
+                            <p class="text-white">title</p>
+                            <p class="text-white small">author</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block position-relative">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                        <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                        <div class="position-absolute bottom-0 start-0 ms-3">
+                            <p class="text-white badge text-bg-danger">
+                                category
+                            </p>
+                            <p class="text-white">title</p>
+                            <p class="text-white small">author</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel1">
+                    <div class="mx-1">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators1" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators1" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators1" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators1" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators1" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators1" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block position-relative">
+                            <div class="overlay h-100 position-absolute start-0 top-0 w-100"></div>
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <div class="position-absolute bottom-0 start-0 ms-3">
+                                <p class="text-white badge text-bg-danger">
+                                    category
+                                </p>
+                                <p class="text-white">title</p>
+                                <p class="text-white small">author</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="mt-5 mb-3">
+
+        <div class="row picks">
+            <div class="row mb-5 mb-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">editor's
+                        picks<i class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Inside Time
+                        newsletter</a></p>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel2">
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators2" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators2" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="text-dark link-danger mt-1 mt-md-3">Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-body text-body py-5 my-5" data-bs-theme="dark">
+        <div class="container">
+            <div class="row video">
+                <!-- <a
+                    href="https://blog.getbootstrap.com/2023/05/30/bootstrap-5-3-0/">data-bs-theme="dark"應用方法，在docs不會看到，要到blog才有</a> -->
+                <h2 class="text-uppercase"><a href="#"
+                        class="text-white link-underline link-underline-opacity-0 d-flex align-items-center">video<i
+                            class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col">
+                            <iframe width="100%" height="500px"
+                                src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">Title & Date
+                        </div>
+                        <div class="col-12 col-lg-6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
+                            explicabo eligendi consequatur hic quibusdam facilis voluptatibus voluptas assumenda
+                            nesciunt
+                            sed.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mt-5 mt-lg-0">
+                    <h2 class="text-uppercase">watch next</h2>
+                    <div class="d-none d-md-block">
+                        <div class="row">
+                            <div class="col-md-3 col-lg-12 my-lg-3">
+                                <div class="row">
+                                    <div class="col-12 col-lg-5"><iframe width="100%" height="100px"
+                                            src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col-12 col-lg-7">Lorem ipsum dolor sit, amet consectetur adipisicing
+                                        elit.
+                                        Quasi,
+                                        odio.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-12 my-lg-3">
+                                <div class="row">
+                                    <div class="col-12 col-lg-5"><iframe width="100%" height="100px"
+                                            src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col-12 col-lg-7">Lorem ipsum dolor sit, amet consectetur adipisicing
+                                        elit.
+                                        Quasi,
+                                        odio.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-12 my-lg-3">
+                                <div class="row">
+                                    <div class="col-12 col-lg-5"><iframe width="100%" height="100px"
+                                            src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col-12 col-lg-7">Lorem ipsum dolor sit, amet consectetur adipisicing
+                                        elit.
+                                        Quasi,
+                                        odio.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-12 my-lg-3">
+                                <div class="row">
+                                    <div class="col-12 col-lg-5"><iframe width="100%" height="100px"
+                                            src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col-12 col-lg-7">Lorem ipsum dolor sit, amet consectetur adipisicing
+                                        elit.
+                                        Quasi,
+                                        odio.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tablet-carousel d-md-none">
+                        <div id="tabletCarousel11">
+                            <div class="mx-1">
+                                <iframe width="100%" height="200px"
+                                    src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil tempora quas velit
+                                    cupiditate hic perspiciatis aliquam. Dolore sit nemo, atque magnam odit
+                                    obcaecati, adipisci repellendus tenetur ea assumenda nulla qui.</p>
+                            </div>
+                            <div class="mx-1">
+                                <iframe width="100%" height="200px"
+                                    src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil tempora quas velit
+                                    cupiditate hic perspiciatis aliquam. Dolore sit nemo, atque magnam odit
+                                    obcaecati, adipisci repellendus tenetur ea assumenda nulla qui.</p>
+                            </div>
+                            <div class="mx-1">
+                                <iframe width="100%" height="200px"
+                                    src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil tempora quas velit
+                                    cupiditate hic perspiciatis aliquam. Dolore sit nemo, atque magnam odit
+                                    obcaecati, adipisci repellendus tenetur ea assumenda nulla qui.</p>
+                            </div>
+                            <div class="mx-1">
+                                <iframe width="100%" height="200px"
+                                    src="https://www.youtube.com/embed/jfKfPfyJRdk?si=ZUW-N1pag5ZQi4UR"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil tempora quas velit
+                                    cupiditate hic perspiciatis aliquam. Dolore sit nemo, atque magnam odit
+                                    obcaecati, adipisci repellendus tenetur ea assumenda nulla qui.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-md content">
+        <div class="row feature">
+            <div class="table-and-pc row d-none d-md-flex">
+                <div class="col-md-9">
+                    <hr class="my-0">
+                    <h2 class="text-uppercase mt-3">feature voices</h2>
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mt-3">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 fs-4">Ethan
+                                Mollick</a>
+                            <a href="#" class="fs-4 text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">We're
+                                    Focusing on the
+                                    Wrong Kind of AI Apocalypse</p>
+                            </a>
+                        </div>
+                        <div class="col-12 col-lg-6 mt-3">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 fs-4">Ian Urbina</a>
+                            <a href="#" class="fs-4 text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">Growing
+                                    Concerns
+                                    About Global Seafood</p>
+                            </a>
+                        </div>
+                        <div class="col-12 col-lg-6 mt-3">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 fs-4">Taylor
+                                Crumpton</a>
+                            <a href="#" class="fs-4 text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">Beyoncé
+                                    Is
+                                    Defying
+                                    Country's Stereotypes</p>
+                            </a>
+                        </div>
+                        <div class="col-12 col-lg-6 mt-3">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 fs-4">Sunita
+                                Viswanath</a>
+                            <a href="#" class="fs-4 text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">The
+                                    Hindu
+                                    Leaders
+                                    Fighting Hindu Nationalism</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 bg-light px-4">
+                    <h2 class="text-center text-uppercase mt-3">LATEST STORIES</h2>
+                    <div class="col-12 my-4">
+                        <a href="#" class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                        <p class="mb-0">reading time</p>
+                        <p class="mb-0">editor time</p>
+                    </div>
+                    <div class="col-12 my-4">
+                        <a href="#" class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                        <p class="mb-0">reading time</p>
+                        <p class="mb-0">editor time</p>
+                    </div>
+                    <div class="col-12 my-4">
+                        <a href="#" class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                        <p class="mb-0">reading time</p>
+                        <p class="mb-0">editor time</p>
+                    </div>
+                    <div class="col-12 my-4">
+                        <a href="#" class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                        <p class="mb-0">reading time</p>
+                        <p class="mb-0">editor time</p>
+                    </div>
+                    <div class="col-12 my-4">
+                        <a href="#" class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                        <p class="mb-0">reading time</p>
+                        <p class="mb-0">editor time</p>
+                    </div>
+                    <div class="col-12 my-4">
+                        <a href="#" class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                        <p class="mb-0">reading time</p>
+                        <p class="mb-0">editor time</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile mobile-carousel d-block d-md-none">
+                <div class="row">
+                    <hr class="my-0">
+                    <h2 class="text-uppercase mt-3 mb-2">feature voices</h2>
+                    <div id="tabletCarousel12">
+                        <div class="px-3 border-end">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 small">Ethan
+                                Mollick</a>
+                            <a href="#" class="small text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">We're
+                                    Focusing on the
+                                    Wrong Kind of AI Apocalypse</p>
+                            </a>
+                        </div>
+                        <div class="px-3 border-end">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 small">Ian Urbina</a>
+                            <a href="#" class="small text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">Growing
+                                    Concerns
+                                    About Global Seafood</p>
+                            </a>
+                        </div>
+                        <div class="px-3 border-end">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 small">Taylor
+                                Crumpton</a>
+                            <a href="#" class="small text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">Beyoncé
+                                    Is
+                                    Defying
+                                    Country's Stereotypes</p>
+                            </a>
+                        </div>
+                        <div class="px-3">
+                            <a href="#" class="text-danger link-underline link-underline-opacity-0 small">Sunita
+                                Viswanath</a>
+                            <a href="#" class="small text-dark link-danger link-underline link-underline-opacity-0">
+                                <p class="mt-2">The
+                                    Hindu
+                                    Leaders
+                                    Fighting Hindu Nationalism</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12 bg-light px-4">
+                        <h2 class="text-center text-uppercase mt-3">LATEST STORIES</h2>
+                        <div class="col-12 my-4">
+                            <a href="#"
+                                class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                            <p class="mb-0">reading time</p>
+                            <p class="mb-0">editor time</p>
+                        </div>
+                        <div class="col-12 my-4">
+                            <a href="#"
+                                class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                            <p class="mb-0">reading time</p>
+                            <p class="mb-0">editor time</p>
+                        </div>
+                        <div class="col-12 my-4">
+                            <a href="#"
+                                class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                            <p class="mb-0">reading time</p>
+                            <p class="mb-0">editor time</p>
+                        </div>
+                        <div class="col-12 my-4">
+                            <a href="#"
+                                class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                            <p class="mb-0">reading time</p>
+                            <p class="mb-0">editor time</p>
+                        </div>
+                        <div class="col-12 my-4">
+                            <a href="#"
+                                class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                            <p class="mb-0">reading time</p>
+                            <p class="mb-0">editor time</p>
+                        </div>
+                        <div class="col-12 my-4">
+                            <a href="#"
+                                class="text-dark link-danger link-underline link-underline-opacity-0 mb-1">title</a>
+                            <p class="mb-0">reading time</p>
+                            <p class="mb-0">editor time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row subscribe-ad my-5">
+            <div class="container-xl p-3">
+                <div class="row align-items-center">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <div class="subscribe-ad-text">
+                            <p class="fs-4">Subscribe now to get unlimited access to <a href="#"
+                                    class="text-danger link-underline link-underline-opacity-0">TIME.com</a> and
+                                more!</p>
+                            <p><i class="fa-solid fa-circle-check me-2 text-danger"></i>2024 Digital Magazine</p>
+                            <p><i class="fa-solid fa-circle-check me-2 text-danger"></i>Inside TIME Newsletter, emailed
+                                twice weekly
+                            </p>
+                            <p><i class="fa-solid fa-circle-check me-2 text-danger"></i>Discounts at the TIME Cover
+                                Store</p>
+                            <a href="#" class="btn bg-danger rounded-1 text-white text-uppercase px-5">subscribe now</a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <a href="#">
+                            <img class="img-fluid"
+                                src="https://api.time.com/wp-content/uploads/2023/12/TIME_HP_Desktop_CM_Unit_616x435_TS-1.png"
+                                alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row listen my-5">
+            <h2 class="text-start text-md-center mb-5">LISTEN TO PERSON OF THE WEEK</h2>
+            <div class="container-lg text-center">
+                <img class="img-fluid" src="https://picsum.photos/600/200?random=1" alt="">
+            </div>
+        </div>
+
+        <div class="row explore my-5">
+            <h2 class="text-center mb-5">EXPLORE MORE</h2>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="know-item-pc d-block">
+                        <img src="https://picsum.photos/600/900?random=5" class="img-fluid" alt="...">
+                    </a>
+                </div>
+            </div>
+
+
+
+            <div id="carouselExampleIndicators11" class="carousel slide mobile d-lg-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators11" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators11" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators11" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators11" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators11" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="know-item d-block text-center">
+                            <img class="img-fluid" src="https://picsum.photos/300/450?random=1" alt="">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block text-center">
+                            <img class="img-fluid" src="https://picsum.photos/300/450?random=1" alt="">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block text-center">
+                            <img class="img-fluid" src="https://picsum.photos/300/450?random=1" alt="">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block text-center">
+                            <img class="img-fluid" src="https://picsum.photos/300/450?random=1" alt="">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="know-item d-block text-center">
+                            <img class="img-fluid" src="https://picsum.photos/300/450?random=1" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row climate">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">climate<i
+                            class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Climate
+                        newsletter</a>
+                </p>
+                <p class="small text-center d-sm-none text-uppercase">5 stories</p>
+            </div>
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <span
+                                class="bg-dark position-absolute end-0 bottom-0 px-2 py-1 text-white small">CREDIT</span>
+                        </div>
+                        <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit, amet</p>
+                        <p class="text-secondary">subtitle or content</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel3">
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators3" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row politics">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">politics<i
+                            class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Climate
+                        newsletter</a>
+                </p>
+                <p class="small text-center d-sm-none text-uppercase">5 stories</p>
+            </div>
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <div class="position-relative">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <span
+                                class="bg-dark position-absolute end-0 bottom-0 px-2 py-1 text-white small">CREDIT</span>
+                        </div>
+                        <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit, amet</p>
+                        <p class="text-secondary">subtitle or content</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="#" class="link-underline link-underline-opacity-0">
+                                <img class="img-fluid" src="https://picsum.photos/300/200?random=1" alt="">
+                                <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel4">
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators4" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators4" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators4" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators4" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators4" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators4" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                            <img class="img-fluid" src="https://picsum.photos/900/600?random=1" alt="">
+                            <p class="mt-4 text-dark link-danger">TITLE Lorem ipsum dolor sit amet.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row health">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">health<i
+                            class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Health
+                        Matters
+                        newsletter</a></p>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel5">
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators5" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators5" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators5" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators5" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators5" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators5" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row entertainment">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">entertainment<i
+                            class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Entertainment
+                        newsletter</a></p>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel6">
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators6" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators6" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators6" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators6" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators6" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators6" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row solar-eclipse-2024">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">solar
+                        eclipse 2024<i class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel7">
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators7" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators7" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators7" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators7" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators7" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators7" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row finance">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">personal
+                        finance<i class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Brief newsletter</a>
+                </p>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel8">
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators8" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators8" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators8" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators8" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators8" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators8" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row future">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase">future
+                        of work<i class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Charter
+                        newsletter</a></p>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel9">
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators9" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators9" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators9" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators9" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators9" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators9" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row shopping-by-timestamped ">
+            <div class="row align-items-center my-5 my-sm-0">
+                <h2 class="col-12 col-lg-6"><a href="#"
+                        class="text-dark link-underline link-underline-opacity-0 d-flex align-items-center text-uppercase text-nowrap">SHOPPING
+                        BY TIMESTAMPED<i class="fa-solid fa-chevron-right fs-4 ms-2"></i></a></h2>
+                <p class="col-12 col-lg-6 fs-5 text-lg-end"><a href="#" class="text-danger"><i
+                            class="fa-regular fa-paper-plane me-2 text-danger"></i>Subscribe to the Brief
+                        newsletter</a>
+                </p>
+            </div>
+
+            <div class="pc row d-none d-lg-flex">
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="d-block link-underline link-underline-opacity-0">
+                        <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                        <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Error, vitae!</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tablet-carousel d-none d-sm-block d-lg-none">
+                <div id="tabletCarousel10">
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="mx-1">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carouselExampleIndicators10" class="carousel slide mobile d-sm-none">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators10" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators10" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators10" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators10" data-bs-slide-to="3"
+                        aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators10" data-bs-slide-to="4"
+                        aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="#" class="d-block link-underline link-underline-opacity-0">
+                            <img src="https://picsum.photos/600/300?random=5" class="img-fluid" alt="...">
+                            <p class="mt-4 text-dark link-danger">Lorem ipsum, dolor sit amet consectetur adipisicing
+                                elit.
+                                Error, vitae!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer mt-5">
+        <div class="media container-fluid">
+            <h1 class="text-center mb-4"><a
+                    class="fw-bold text-danger text-center fs-1 link-underline link-underline-opacity-0"
+                    href="https://time.com/" target="_blank">TIME</a>
+            </h1>
+            <ul class="text-center list-unstyled">
+                <li class="nav-item d-inline-block me-2">
+                    <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                        style="width: 30px; height: 30px;" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                </li>
+                <li class="nav-item d-inline-block me-2">
+                    <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                        style="width: 30px; height: 30px;" href="#"><i class="fa-brands fa-instagram"></i></a>
+                </li>
+                <li class="nav-item d-inline-block me-2">
+                    <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                        style="width: 30px; height: 30px;" href="#"><i class="fa-brands fa-twitter"></i></a>
+                </li>
+                <li class="nav-item d-inline-block me-2">
+                    <a class="nav-link text-danger border border-2 border-danger rounded-circle d-flex justify-content-center align-items-center text-center"
+                        style="width: 30px; height: 30px;" href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                </li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="footer-nav container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-lg-3 text-start">
+                        <ul class="list-unstyled">
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Home</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">U.S.</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Politics</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">World</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Health</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Business</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Tech</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Personal
+                                    Finance
+                                    by TIME Stamped</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Shopping
+                                    by
+                                    TIME
+                                    Stamped</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Future
+                                    of
+                                    Work by
+                                    Charter</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-lg-3 text-start">
+                        <ul class="list-unstyled">
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Entertainment</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Ideas</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Science</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">History</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Sports</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Magazine</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">The
+                                    TIME
+                                    Vault</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">TIME
+                                    For
+                                    Kids</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">TIME
+                                    CO2</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Coupons</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-lg-3 text-start">
+                        <ul class="list-unstyled">
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">TIME
+                                    Edge</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Video</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Masthead</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Newsletters</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Subscribe</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Subscriber
+                                    Benefits</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Give a
+                                    Gift</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Shop
+                                    the
+                                    TIME Store</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Careers</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Modern
+                                    Slavery Statement</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-lg-3 text-start">
+                        <ul class="list-unstyled">
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Press
+                                    Room</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">TIME
+                                    Studios</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">U.S. &
+                                    Canada Customer Care</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Global
+                                    Help
+                                    Center</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Contact
+                                    the
+                                    Editors</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Reprints
+                                    and Permissions</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Site
+                                    Map</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">Media
+                                    Kit</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#"
+                                    class="link-underline link-underline-opacity-0 text-secondary small">Supplied
+                                    Partner Content</a>
+                            </li>
+                            <li class="py-1">
+                                <a href="#" class="link-underline link-underline-opacity-0 text-secondary small">About
+                                    Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="copyright container-fluid text-center">
+            <div class="row small text-secondary">
+                <p class="col-12 mb-2">© 2024 TIME USA, LLC. All Rights Reserved. Use of this site
+                    constitutes
+                    acceptance of our <a href="#" class="text-danger link-underline link-underline-opacity-0">
+                        Terms of Service, Privacy
+                        Policy (Your Privacy Rights) and Do Not Sell or Share My Personal Information
+                    </a>.
+                </p>
+                <p class="col-12">TIME may receive compensation for some links to products and services on
+                    this
+                    website. Offers may be subject to change
+                    without notice.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // size over lg (included)
+        const screenSize = window.matchMedia('(min-width: 992px)');
+        const collapseBrand = document.getElementById('collapseBrand');
+
+        // 卷軸往下拉，categoryNavbar 隱藏，反之則顯示
+        let lastScrollTop = 0;
+        let navbar = document.getElementById('topNavbarGroup');
+
+        window.addEventListener('scroll', function () {
+            if (screenSize.matches) {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                // 卷軸往下拉
+                if (scrollTop > lastScrollTop) {
+                    navbar.style.transition = 'top .5s';
+                    navbar.style.top = '-50px';
+                    collapseBrand.classList.remove('opacity-0');
+                    collapseBrand.classList.remove('pe-none');
+                    collapseBrand.style.transition = 'opacity .3s';
+
+                }
+                // 往上
+                else {
+                    navbar.style.top = '0';
+                    collapseBrand.classList.add('opacity-0');
+                    collapseBrand.classList.add('pe-none');
+                }
+
+                lastScrollTop = scrollTop;
+            }
+
+            // 避免使用者在較寬的狀況下滑動過頁面，之後卻在同個裝置改變瀏覽器尺寸。否則因捲動而移出的 navbar 會叫不回來
+            else {
+                navbar.style.top = '0';
+                collapseBrand.classList.add('opacity-0');
+                collapseBrand.classList.add('pe-none');
+            }
+        });
+    </script>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- slick -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript">
+        $('#tabletCarousel1').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        });
+
+        $('#tabletCarousel2').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        });
+
+        $('#tabletCarousel3').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        });
+
+        $('#tabletCarousel4').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        });
+
+        $('#tabletCarousel5').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel6').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel7').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel8').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel9').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel10').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel11').slick({
+            infinite: false,
+            slidesToShow: 2.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel12').slick({
+            infinite: false,
+            slidesToShow: 3.1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        }); $('#tabletCarousel12').slick({
+            infinite: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 0,
+            dots: false,
+
+        });
+    </script>
+</body>
+
+</html>

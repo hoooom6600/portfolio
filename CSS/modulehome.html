@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Home CSS手切仿切</title>
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: var(--main-fc);
+            text-decoration: none;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        :root {
+            /* background-color */
+            --main-bc: #f7f8f8;
+            --sub-bc: #fff;
+            /* font-size */
+            --main-fz: 30px;
+            --sub-fz: 14px;
+            /* font-color */
+            --main-fc: #292b2c;
+        }
+
+        .main-fz {
+            font-size: var(--main-fz);
+        }
+
+        .sub-fz {
+            font-size: var(--sub-fz);
+        }
+
+        body {
+            background-color: var(--main-bc);
+        }
+
+        .info,
+        .social {
+            background-color: var(--sub-bc);
+        }
+
+        span {
+            display: block;
+        }
+
+        .inline-span {
+            display: inline-block;
+        }
+
+        .more {
+            border: 1px solid #000;
+            padding: 3px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .more,
+        .fa-solid {
+            transition: .5s;
+        }
+
+        .more:hover {
+            background-color: #000;
+        }
+
+        .more:hover,
+        .more:hover .fa-solid {
+            color: #fff;
+        }
+
+        .short-more {
+            max-width: 105px;
+        }
+
+        .long-more {
+            max-width: 200px;
+        }
+
+        .container-fluid {
+            width: 100%;
+            max-width: 1660px;
+            margin: auto;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 0 5%;
+            box-sizing: border-box;
+        }
+
+        /* 導覽列 */
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .main-menu {
+            display: flex;
+        }
+
+        .main-menu a {
+            display: inline-block;
+            padding: 0 10px;
+        }
+
+        .main-menu a span {
+            transition: .3s;
+        }
+
+        .main-menu a:hover span {
+            color: #7c7d7e;
+        }
+
+        /* 首圖 */
+        .banner {
+            width: 100%;
+            max-width: 1660px;
+            margin: auto;
+            height: 580px;
+            background: linear-gradient(-65deg, transparent 80%, var(--main-bc) 80%), url('https://picsum.photos/600/400?random=1') no-repeat center center / cover;
+            position: relative;
+        }
+
+        .banner::before {
+            content: 'MODULE HOME';
+            position: absolute;
+            font-size: 40px;
+            top: 20%;
+            left: 10%;
+        }
+
+        /* INFO */
+        .news,
+        .article,
+        .report {
+            display: flex;
+            padding: 50px 0;
+        }
+
+        .news,
+        .report {
+            justify-content: space-between;
+        }
+
+        .news .title,
+        .report .title {
+            width: 20%;
+        }
+
+        .group {
+            width: 75%;
+        }
+
+        .news {
+            align-items: center;
+        }
+
+        .article {
+            line-height: 2.5;
+            margin: 5px 0;
+            padding: 0 10px;
+            box-sizing: border-box;
+            transition: .5s;
+        }
+
+        .article .date {
+            padding-right: 1em;
+        }
+
+
+        .article:hover {
+            background-color: #f2f2f2;
+        }
+
+        .card-list {
+            display: flex;
+        }
+
+        .card {
+            box-sizing: border-box;
+            width: calc(100% / 3);
+            /* padding: 0 10px; */
+            /* 把裝飾線過長的部分遮起來 */
+            overflow: hidden;
+        }
+
+        .card+.card {
+            /* margin-left: 20px; */
+            margin-left: 5%;
+        }
+
+        .card img {
+            width: 100%;
+        }
+
+        .content .date {
+            position: relative;
+            display: inline;
+        }
+
+        .content .date::before {
+            position: absolute;
+            content: '';
+            width: 300%;
+            top: 0;
+            bottom: 0;
+            left: 100%;
+            margin: auto;
+            height: 1px;
+            background-color: #999;
+        }
+
+        .card-list a {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        @media screen and (max-width: 768px) {
+
+            .card-list .pic {
+                height: 40%;
+            }
+
+            .card-list .pic img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .card-list a {
+                justify-content: space-between;
+            }
+        }
+
+
+        /* CONCEPT */
+        .concept {
+            height: 580px;
+            position: relative;
+            background: linear-gradient(-65deg, var(--main-bc) 30%, transparent 30%), url('https://picsum.photos/600/400?random=19') no-repeat center center / cover;
+            margin: 100px 0;
+        }
+
+        .intro {
+            background-color: #fff;
+            position: absolute;
+            padding: 50px;
+            margin: auto;
+        }
+
+        .intro-right {
+            top: 50%;
+            right: 15%;
+            transform: translateY(-50%);
+        }
+
+        /* WORKS */
+        .works a {
+            display: block;
+        }
+
+        .works a:hover img {
+            opacity: .7;
+        }
+
+        .works img {
+            vertical-align: bottom;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .3s;
+        }
+
+        .left,
+        .right {
+            box-sizing: border-box;
+        }
+
+        /* NEW */
+        .new {
+            background-color: var(--sub-bc);
+            padding: 2em;
+        }
+
+        .new a:not(.more) {
+            width: 100%;
+            height: 100%;
+        }
+
+        .new-top {
+            display: flex;
+        }
+
+        .new-top .left {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-right: 2%;
+        }
+
+        .new-top .right {
+            width: 60%;
+            padding-left: 2%;
+        }
+
+        .new-top .left,
+        .new-top .right {
+            padding-bottom: 2%;
+        }
+
+
+        .new-bottom {
+            display: flex;
+        }
+
+        .new-bottom .left,
+        .new-bottom .right {
+            width: 50%;
+            padding-top: 2%;
+        }
+
+        .new-bottom .left {
+            padding-right: 2%;
+        }
+
+        .new-bottom .right {
+            display: flex;
+            flex-direction: column;
+            padding-left: 2%;
+        }
+
+        .new-bottom .right :not(:last-child) {
+            margin-bottom: 8%;
+        }
+
+        /* REFORM */
+        .reform {
+            display: flex;
+            margin: 10% 0;
+            padding: 2em;
+        }
+
+        .reform .left,
+        .reform .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        .reform .left {
+            padding-right: 2%;
+        }
+
+        .reform .right {
+            padding-left: 2%;
+            order: 1;
+        }
+
+        .reform .left a {
+            height: 50%;
+        }
+
+        .reform .right>a {
+            flex-grow: 1;
+        }
+
+        .reform a {
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .reform a:not(:last-child) {
+            margin-bottom: 10%;
+        }
+
+        .reform .pic {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tag {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: .5em 1em;
+            color: #000;
+        }
+
+        /* LOCATION */
+        .location {
+            text-align: center;
+        }
+
+        .location .more {
+            margin: auto;
+        }
+
+        .google-map {
+            width: 100%;
+        }
+
+        .feature a {
+            display: inline-block;
+            width: 35%;
+        }
+
+        .feature a img {
+            width: 100%;
+        }
+
+        /* STAFF */
+        .staff {
+            width: 100%;
+            max-width: 1660px;
+            height: 580px;
+            margin: 50px 0;
+            background: linear-gradient(90deg, transparent, transparent), url('https://picsum.photos/900/600?random=1') no-repeat right center / auto 100%, linear-gradient(-65deg, var(--sub-bc) 70%, var(--main-bc) 70%);
+            position: relative;
+        }
+
+        .intro-left {
+            top: 50%;
+            left: 15%;
+            transform: translateY(-50%);
+            background-color: #f2f2f2;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+        }
+
+        .social {
+            padding: 100px 0;
+        }
+
+        .social h2 {
+            margin-bottom: 50px;
+        }
+
+        .media {
+            width: 30%;
+            margin: auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .media a,
+        .media i {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .media i {
+            color: #fff;
+            font-size: 30px;
+            line-height: 50px;
+            background-color: #292b2c;
+            transition: .5s;
+        }
+
+        .media a:hover i {
+            background-color: #757676;
+        }
+
+        .declare {
+            padding: 100px 0;
+        }
+
+        .declare h2 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reminder {
+            background-color: #000;
+        }
+
+        .reminder p {
+            text-align: center;
+            color: #fff;
+            font-size: 25px;
+            padding: 5px 0;
+        }
+
+        .reminder a {
+            font-size: 25px;
+            color: #fa0;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container-fluid">
+            <div class="reminder">
+                <p>
+                    This is a style practicing of imitating website layout. The inspiration is: <a
+                        href="https://www.module-home.jp/" target="_blank">module-home.jp</a>.
+                </p>
+                <p>Please visit <a href="https://web.archive.org/web/20231210202547/https://www.module-home.jp/"
+                        target="_blank">Original Layout
+                        Here</a>
+                </p>
+            </div>
+            <div class="nav">
+                <h1><a href="#"><img src="https://picsum.photos/70/70?random=1" alt="LOGO"></a></h1>
+                <nav>
+                    <ul class="main-menu">
+                        <li>
+                            <a href="#">
+                                <span>CONCEPT</span>
+                                <span>家づくり</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>REPORT</span>
+                                <span>建築レポート</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>NEW HOUSE</span>
+                                <span>新築実例</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>REFORM</span>
+                                <span>リフォーム実例</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>COMPANY</span>
+                                <span>会社概要</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>CONTACT</span>
+                                <span>お問い合わせ</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="banner"></div>
+    </header>
+
+
+
+
+
+
+
+    <div class="info">
+        <div class="container">
+            <div class="news">
+                <div class="title">
+                    <h2>
+                        <span class="eng main-fz">NEWS</span>
+                        <span class="jp sub-fz">お知らせ</span>
+                    </h2>
+                    <a href="#" class="more short-more">READ MORE<i class="fa-solid fa-angle-right"></i></a>
+                </div>
+                <div class="group article-list">
+                    <a href="#" class="article">
+                        <div class="date">2023.09.01</div>
+                        <div class="txt">Lorem ipsum dolor sit amet.</div>
+                    </a>
+                    <a href="#" class="article">
+                        <div class="date">2023.09.02</div>
+                        <div class="txt">Lorem ipsum dolor sit amet.</div>
+                    </a>
+                    <a href="#" class="article">
+                        <div class="date">2023.09.03</div>
+                        <div class="txt">Lorem ipsum dolor sit amet.</div>
+                    </a>
+                </div>
+            </div>
+            <div class="report">
+                <div class="title">
+                    <h2>
+                        <span class="eng main-fz">REPORT</span>
+                        <span class="jp sub-fz">建築レポート</span>
+                    </h2>
+                    <a href="#" class="more short-more">READ MORE<i class="fa-solid fa-angle-right"></i></a>
+                </div>
+                <div class="group card-list">
+                    <div class="card">
+                        <a href="#">
+                            <div class="pic">
+                                <img src="https://picsum.photos/300/150?random=31" alt="">
+                            </div>
+                            <div class="content">
+                                <div class="date">2023.09.11</div>
+                                <div class="txt">Lorem ipsum dolor sit amet.</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="card">
+                        <a href="#">
+                            <div class="pic">
+                                <img src="https://picsum.photos/300/150?random=32" alt="">
+                            </div>
+                            <div class="content">
+                                <div class="date">2023.09.12</div>
+                                <div class="txt">Lorem ipsum dolor sit amet.</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="card">
+                        <a href="#">
+                            <div class="pic">
+                                <img src="https://picsum.photos/300/150?random=33" alt="">
+                            </div>
+                            <div class="content">
+                                <div class="date">2023.09.13</div>
+                                <div class="txt">Lorem ipsum dolor sit amet.</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="concept">
+        <div class="container-fluid">
+            <div class="intro intro-right">
+                <h2>
+                    <span class="eng main-fz">CONCEPT</span>
+                    <span class="jp main-fz">
+                        <span>あなたにそっと寄り添う</span>
+                        <span>「佇まい」のある住まい。</span>
+                    </span>
+                </h2>
+                <p class="jp sub-fz">
+                    <span>家づくりのコンセプトは「佇まい」</span>
+                    <span>佇まいとは、人の暮らしかたと定義しています。</span>
+                    <span>はやりのデザインを追うのではなく</span>
+                    <span>ずっと愛されるシンプルなデザイン。</span>
+                    <span>暮らしはこの先、何十年も続くものだから</span>
+                    <span>見た目だけでなく、ずっと気持ちよく暮らせる家に。</span>
+                    <span>私たちが考える「佇まい」を</span>
+                    <span>ご提案させていただいています。</span>
+                </p>
+                <a href="#" class="more long-more">READ MORE<i class="fa-solid fa-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="works">
+        <div class="container">
+            <div class="new">
+
+                <div class="new-top">
+                    <div class="left">
+                        <div class="title">
+                            <h2>
+                                <span class="eng main-fz inline-span">WORKS</span>
+                                <span class="eng sub-fz inline-span">NEW HOUSE</span>
+                                <span class="jp sub-fz">新築実例</span>
+                            </h2>
+                            <a href="#" class="more short-more">READ MORE<i class="fa-solid fa-angle-right"></i></a>
+                        </div>
+
+                        <div class="pic">
+                            <a href="#"><img src="https://picsum.photos/300/200?random=21" alt=""></a>
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <a href="#"><img src="https://picsum.photos/300/200?random=22" alt=""></a>
+                    </div>
+                </div>
+
+                <div class="new-bottom">
+                    <div class="left">
+                        <a href="#"><img src="https://picsum.photos/300/200?random=23" alt=""></a>
+                    </div>
+
+                    <div class="right">
+                        <a href="#"><img src="https://picsum.photos/300/200?random=24" alt=""></a>
+                        <a href="#"><img src="https://picsum.photos/300/200?random=25" alt=""></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="reform">
+                <div class="right">
+                    <div class="title">
+                        <h2>
+                            <span class="eng main-fz inline-span">WORKS</span>
+                            <span class="eng sub-fz inline-span">REFORM,BARRIER FREE</span>
+                            <span class="jp sub-fz">リフォーム・バリアフリー実例</span>
+                        </h2>
+                        <a href="#" class="more short-more">READ MORE<i class="fa-solid fa-angle-right"></i></a>
+                    </div>
+                    <a href="#">
+                        <div class="pic"><img src="https://picsum.photos/300/200?random=13" alt=""></div>
+                        <div class="tag">REFORM</div>
+                    </a>
+                    <a href="#">
+                        <div class="pic"><img src="https://picsum.photos/300/200?random=14" alt=""></div>
+                        <div class="tag">REFORM</div>
+                    </a>
+                </div>
+                <div class="left">
+                    <a href="#">
+                        <div class="pic"><img src="https://picsum.photos/300/200?random=11" alt=""></div>
+                        <div class="tag">REFORM</div>
+                    </a>
+                    <a href="#">
+                        <div class="pic"><img src="https://picsum.photos/300/200?random=12" alt=""></div>
+                        <div class="tag">REFORM</div>
+                    </a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="location">
+        <div class="container-fluid">
+            <div class="map">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2280.7787538171888!2d136.2413441995641!3d36.056705571672744!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5ff8be8378116921%3A0xc1cb05a378831eca!2z44GP44KL44GP44KL5a-_5Y-4IOOBu-OBjOOCieOBi-S6rQ!5e0!3m2!1szh-TW!2sus!4v1695700187603!5m2!1szh-TW!2sus"
+                    width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade" class="google-map"></iframe>
+            </div>
+            <div class="address">
+                <span class="jp sub-fz inline-span">〒910-0854 福井市御幸4丁目19-30</span>
+                <span class="jp sub-fz inline-span">Tel.0776.26.0018</span>
+                <span class="jp sub-fz inline-span">Fax.0776.26.0373</span>
+                <span class="jp sub-fz inline-span">E-mail info@module-home.jp</span>
+                <a href="#" class="more long-more">COMPANY<i class="fa-solid fa-angle-right"></i></a>
+            </div>
+            <div class="feature">
+                <a href="#"><img src="https://picsum.photos/500/150?random=1" alt=""></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="staff">
+        <div class="container-fluid">
+            <div class="intro intro-left">
+                <h2>
+                    <span class="eng main-fz">STAFF</span>
+                    <span class="jp main-fz">
+                        <span>そこに住む人、環境を考えた</span>
+                        <span>ゆとりとくつろぎの</span>
+                        <span>｢いえづくり｣をご提案。</span>
+                    </span>
+                </h2>
+                <p class="jp sub-fz">
+                    <span>福井県の住宅事情や生活環境を知り、</span>
+                    <span>地域に密着した建築技術と、人と人、家族の</span>
+                    <span>つながりを大切にした｢いえづくり｣を、</span>
+                    <span>住む人の想い･ご要望・周辺環境への考慮など</span>
+                    <span>じっくりと話し合いながら、</span>
+                    <span>十分にご納得していただける｢いえづくり｣を</span>
+                    <span>ご提案させていただきます。</span>
+                </p>
+                <a href="#" class="more long-more">スタッフ紹介<i class="fa-solid fa-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    </main>
+
+
+
+
+
+
+
+
+
+    <footer>
+        <div class="container-fluid">
+            <div class="social">
+                <h2 class="eng main-fz">FOLLOW & CONTACT US</h2>
+                <ul class="media">
+                    <li>
+                        <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank"><i class="fa-regular fa-envelope"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="declare">
+                <h2>
+                    <a href="#"><img src="https://picsum.photos/70/70?random=1" alt="LOGO"></a>
+                    <span>株式会社 モジュールホーム</span>
+                </h2>
+                <p class="certificate">
+                    <span class="inline-span">一級建築士事務所：福井県知事登録</span>
+                    <span class="inline-span">第-1240号／建築業許可：福井県知事第007856号</span>
+                </p>
+                <p class="privacy">プライバシーポリシー</p>
+                <p class="copyright">COPYRIGHT© MODULE HOME INC. ALL RIGHTS RESERVED</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

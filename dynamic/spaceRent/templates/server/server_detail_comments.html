@@ -1,0 +1,72 @@
+{% extends "/server/server_layout.html" %}
+
+{% block title %}
+Staff System: Comment: {{ comment.id }}
+{% endblock %}
+
+{% block main %}
+<div class="container my-3">
+    <h2 class="section-title text-center py-3 py-md-5">Edit Comment</h2>
+
+    <form action="/comment_update" method="post">
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3">
+                <label for="id" class="form-label"><span class="text-danger me-1">*</span>ID</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="ID" value="{{ comment.id }}"
+                    required readonly>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+                <label for="order_id" class="form-label"><span class="text-danger me-1">*</span>Order ID</label>
+                <input type="text" class="form-control" id="order_id" name="order_id" placeholder="Order ID"
+                    value="{{ comment.order_id }}" required readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+                <label for="username" class="form-label"><span class="text-danger me-1">*</span>Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                    value="{{ comment.username }}" required readonly>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+                <label for="space" class="form-label"><span class="text-danger me-1">*</span>Space</label>
+                <input type="text" class="form-control" id="space" name="space" placeholder="Space"
+                    value="{{ comment.space }}" required readonly>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+                <label for="status" class="form-label"><span class="text-danger me-1">*</span>Status</label>
+                <select class="form-select" aria-label="Comment status select" name="status" id="status">
+                    {% if comment.status == 'hide' %}
+                    <option disabled>Select status</option>
+                    <option value="show">Show</option>
+                    <option value="hide" selected>Hide</option>
+                    {% elif comment.status == 'show' %}
+                    <option disabled>Select status</option>
+                    <option value="show" selected>Show</option>
+                    <option value="hide">Hide</option>
+
+                    {% else %}
+                    <option disabled selected>Select status</option>
+                    <option value="show">Show</option>
+                    <option value="hide">Hide</option>
+
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3">
+                <label for="comment" class="form-label"><span class="text-danger me-1">*</span>Comment</label>
+                <textarea class="form-control" id="comment" name="comment" placeholder="Comment" rows="9" required
+                    readonly>{{ comment.comment }}</textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3 text-end">
+                <a href="/server_comments" class="btn btn-secondary">Cancel</a>
+                <a href="{{ url_for('delete_comments', id=comment.id) }}" class="btn btn-danger">Delete</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
