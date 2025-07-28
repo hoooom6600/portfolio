@@ -91,7 +91,7 @@
 
             },
             mounted() {
-                fetch('https://restcountries.com/v3.1/all', { method: 'GET' })
+                fetch('https://restcountries.com/v3.1/all?fields=name,flags,capital,currencies,latlng', { method: 'GET' })
                     .then((res) => {
                         console.log(res.ok);
                         if (!res.ok) {
