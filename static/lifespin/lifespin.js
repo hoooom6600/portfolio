@@ -2,7 +2,7 @@ let worldPopulation = 0;
 let country = [];
 let sortCountry = [];
 
-const world = fetch('https://restcountries.com/v3.1/all')
+const world = fetch('https://restcountries.com/v3.1/all?fields=name,population,flags')
     .then((res) => {
         console.log(res.ok);
         if (!res.ok) {
